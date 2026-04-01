@@ -1,0 +1,101 @@
+#root {
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+.hero-banner {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  margin-top: 3%;
+  margin-left: -0.75%;
+  padding-top: 2%;
+  padding-bottom: -10%;
+}
+
+.banner {
+  width: 160%;
+  height: auto;
+  display: block;
+  transform: scale(1.4);
+  transform-origin: center;
+  border: 3px solid #41715e;
+}
+
+.top-buttons {
+  position: center;
+  top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+  padding-bottom: 5%;
+}
+
+.scan-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+  position: relative;
+  z-index: 8;
+}
+
+.scan-button {
+  background-color: #689884;
+  border-bottom: 5px solid #41715e;
+  padding: 15px 150px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.scan-button:hover {
+  background-color: #99B8A2;
+  border-color:  #6a9885;
+}
+
+.scroll-block {
+  margin: 0 auto;
+  position: relative;
+  width: 280px;          /* adjust as you want */
+  height: 250px;         /* this creates the scroll area */
+  overflow-y: auto;      /* enables vertical scrolling */
+  padding: 15px;
+  background: #e8ffe8;   /* light green like your theme */
+  border-radius: 12px;
+  border: 2px solid #689884;
+}
+
+.item {
+  margin-bottom: 10px;
+}
+
+.item label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color:#41715e;
+}
+
+.item input {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #ffffff;
+  padding: 5%;
+  background-color: #41715e;
+  margin-top: 10% ;
+}
