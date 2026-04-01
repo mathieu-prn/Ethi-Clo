@@ -12,6 +12,13 @@ School project of an application that scrapes clothing brands for fabric composi
 - [ ] Extract fabric composition from product pages
 - [ ] Extract environmental/sustainability scores
 
+### 🕵️ OCR Module
+- [ ] Connect camera or image upload to backend.  
+- [ ] Image processing (Grayscale, denoise, enhance contrast, deskew, and resize)
+- [ ] OCR Extraction (Tesseract)  
+- [ ] Extract Data (brand, fabric composition, and origin).  
+- [ ] Output & Integration: Return structured JSON to the scraper; handle confidence checks and 
+
 ### 🗄️ Data
 - [ ] Define output data schema (JSON / CSV)
 - [ ] Store scraped results in a structured format
