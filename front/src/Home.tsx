@@ -1,25 +1,23 @@
 import ethiBanner from './assets/ethi-clo.png'
 import { useNavigate } from "react-router-dom";
-import './Home.css'
+import "./Home.css"
 
 function Home() {
     const navigate = useNavigate();
   return (
     <>
-      <header>
-        <div className="top-buttons">
-        <button onClick={() => console.log("Test 1 clicked")}>Expulser Ethan</button>
-        <button onClick={() => console.log("Test 2 clicked")}>Paola présidente</button>
-        <button onClick={() => console.log("Test 3 clicked")}>Commander des costumes de grenouilles</button>
-      </div>
-      </header>
+    <div className="top-buttons">
+        <button onClick={() => console.log("Test 1 clicked")}>Test 1</button>
+        <button onClick={() => console.log("Test 2 clicked")}>Test 2</button>
+        <button onClick={() => console.log("Test 3 clicked")}>Test 3</button>
+    </div>
 
-      <div className="hero-banner">
+    <div className="hero-banner">
           <img src={ethiBanner} className="banner" alt="Ethi banner" />
       </div>   
 
       <div className="scan-container">
-        <button className="scan-button">Scan</button>
+        <button className="scan-button" onClick={() => navigate("/scan")}>Scan</button>
       </div>
 
       <div className="history">
