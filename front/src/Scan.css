@@ -1,0 +1,77 @@
+html, body {
+  overflow: hidden;
+}
+
+.app {
+    margin: 0;
+  padding: 0;
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: #dbe7df;
+}
+
+.bg-circle-top {
+  position: absolute;
+  top: -25vw;
+  left: -10vw;
+  width: 80vw;
+  height: 80vw;
+  background: linear-gradient(#9cc4a7, #6c9a87);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.bg-circle-bottom {
+  position: absolute;
+  bottom: -40vw;
+  left: -20vw;
+  width: 100vw;
+  height: 100vw;
+  background: linear-gradient(#6c9a87, #3f5f52);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card {
+  margin-top: 12vh;
+  width: 85vw;
+  height: 50vh;
+  background: #e6e6e6;
+  border-radius: 20px;
+}
+
+.scan-btn {
+  margin-top: 4vh;
+  width: 70vw;
+  height: 7vh;
+  background: #a1ceb2;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #41715e;
+  font-weight: bold;
+}
+
+.scan-btn:active{
+  animation: phoneButtonEffect 0.2s linear;
+}
+@keyframes phoneButtonEffect {
+  50% {
+    transform: scale(1.1)
+  }
+  100% {
+    transform: scale(1)
+  }
+}

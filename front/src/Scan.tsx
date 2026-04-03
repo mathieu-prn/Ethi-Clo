@@ -1,5 +1,6 @@
 import { useState } from "react";
 import WebcamCapture from "./WebcamCapture.tsx";
+import "./Scan.css";
 
 function Dashboard() {
   const [captureRequested, setCaptureRequested] = useState(false);
