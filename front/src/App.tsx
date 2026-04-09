@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import './App.css'
+import './styles/App.css'
 import { Routes, Route } from "react-router-dom";
 import Home from './Home.tsx'
 import Scan from './Scan.tsx'
