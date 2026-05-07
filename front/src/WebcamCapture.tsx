@@ -35,6 +35,7 @@ const WebcamCanvas = styled.canvas`
 interface WebcamCaptureProps {
   captureRequested: boolean;
   resetRequested?: boolean;
+  saveRequested?: boolean;
   onCaptureComplete?: () => void;
   onResetComplete?: () => void;
   onCameraStateChange?: (isRunning: boolean) => void;
@@ -43,6 +44,7 @@ interface WebcamCaptureProps {
 const WebcamCapture = ({
   captureRequested,
   resetRequested,
+  saveRequested,
   onCaptureComplete,
   onResetComplete,
   onCameraStateChange,
@@ -113,7 +115,7 @@ const WebcamCapture = ({
 
         const imageDataUrl = canvas.toDataURL("image/jpeg");
         setCapturedImage(imageDataUrl);
-        saveCapturedImage(imageDataUrl);
+        
         stopWebcam();
         onCaptureComplete?.();
       }
@@ -123,6 +125,12 @@ const WebcamCapture = ({
   useEffect(() => {
     onCameraStateChange?.(!!stream);
   }, [stream, onCameraStateChange]);
+
+  useEffect(() => {
+    if (saveRequested && capturedImage) {
+      saveCapturedImage(capturedImage);
+    }
+  }, [saveRequested, capturedImage]);
 
   useEffect(() => {
     if (resetRequested) {

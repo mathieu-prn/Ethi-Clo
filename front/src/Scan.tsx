@@ -10,12 +10,10 @@ function Dashboard() {
   const [cameraRunning, setCameraRunning] = useState(false);
   const [captured, setCaptured] = useState(false);
   const [resetRequested, setResetRequested] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
+  const [saveRequested, setSaveRequested] = useState(false);
 
   const onScanClick = () => {
-    if (captured) {
-      setResetRequested(true);
-      return;
-    }
     if (!cameraRunning) {
       alert("Please start the camera first");
       return;
@@ -33,29 +31,44 @@ function Dashboard() {
     setResetRequested(false);
   };
 
+  const onConfirm = () => {
+    setConfirmed(true);
+    setSaveRequested(true);
+  };
+
+  const onRetake = () => {
+    setConfirmed(false);
+    setSaveRequested(false);
+    setResetRequested(true);
+  };
+
   return (
     <div className="app">
-      {/* Background circles */}
       <div className="bg-circle-top"></div>
       <div className="bg-circle-bottom"></div>
-
-      {/* Foreground UI */}
       <div className="content">
-        <button className="back-button" onClick={() => navigate("/")}><FaArrowLeft /></button>
+        <button className="back-button" onClick={() => navigate("/")}>
+          <FaArrowLeft />
+        </button>
         <div className="card">
           <WebcamCapture
             captureRequested={captureRequested}
             resetRequested={resetRequested}
+            saveRequested={saveRequested}
             onCaptureComplete={onCaptureComplete}
             onResetComplete={onResetComplete}
             onCameraStateChange={setCameraRunning}
           />
         </div>
-        <ScanButton
-          onClick={onScanClick}
-          disabled={!cameraRunning && !captured}
-          label={captured ? "RETAKE" : "SCAN"}
-        />
+        {captured ? (
+          <ConfirmButtons onConfirm={onConfirm} onRetake={onRetake} />
+        ) : (
+          <ScanButton
+            onClick={onScanClick}
+            disabled={!cameraRunning}
+            label="SCAN"
+          />
+        )}
       </div>
     </div>
   );
@@ -72,6 +85,20 @@ function ScanButton({ onClick, disabled, label = "SCAN" }: ScanButtonProps) {
     <button className="scan-btn" onClick={onClick} disabled={disabled}>
       {label}
     </button>
+  );
+}
+
+type ConfirmButtonsProps = {
+  onConfirm: () => void;
+  onRetake: () => void;
+};
+
+function ConfirmButtons({ onConfirm, onRetake }: ConfirmButtonsProps) {
+  return (
+    <div className="confirm-buttons">
+      <button className="scan-btn" onClick={onRetake}>RETAKE</button>
+      <button className="scan-btn" onClick={onConfirm}>USE PHOTO</button>
+    </div>
   );
 }
 
