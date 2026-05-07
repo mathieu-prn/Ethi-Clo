@@ -1,8 +1,11 @@
 import { useState } from "react";
 import WebcamCapture from "./WebcamCapture.tsx";
 import "./styles/Scan.css";
+import { FaArrowLeft } from "react-icons/fa"; 
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [captureRequested, setCaptureRequested] = useState(false);
   const [cameraRunning, setCameraRunning] = useState(false);
   const [captured, setCaptured] = useState(false);
@@ -38,6 +41,7 @@ function Dashboard() {
 
       {/* Foreground UI */}
       <div className="content">
+        <button className="back-button" onClick={() => navigate("/")}><FaArrowLeft /></button>
         <div className="card">
           <WebcamCapture
             captureRequested={captureRequested}

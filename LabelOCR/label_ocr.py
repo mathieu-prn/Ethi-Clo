@@ -125,7 +125,7 @@ FABRIC_KEYWORDS: list[str] = [
     "chanvre", "bambou", "cuir", "daim", "jean", "satin", "velours",
     "dentelle", "microfibre", "polyamide", "polyuréthane", "acétate",
     "ramie", "alpaga", "angora", "mohair", "duvet", "fourrure",
-    "caoutchouc", "farciment", "folre", "doublure",
+    "caoutchouc", "farciment", "folre",
     # Spanish
     "algodón", "algodon", "poliéster", "poliester", "poliamida",
     "elastano", "seda", "lana",

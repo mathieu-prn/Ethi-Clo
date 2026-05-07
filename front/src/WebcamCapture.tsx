@@ -53,6 +53,7 @@ const WebcamCapture = ({
   // We use stream state to track if the camera is actually active
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [savedImageUrl, setSavedImageUrl] = useState<string | null>(null);
 
   const startWebcam = async () => {
     try {
@@ -82,6 +83,22 @@ const WebcamCapture = ({
     }
   };
 
+  const saveCapturedImage = async (imageDataUrl: string) => { 
+    try { 
+      const response = await fetch('/scan/save', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify({ imageDataUrl }), }); 
+        if (!response.ok) { 
+          throw new Error('Failed to save captured image') 
+        } 
+        const data = await response.json() 
+        setSavedImageUrl(data.url || '/scan/image.jpg') 
+    } catch (error) { 
+      console.error('Failed to save captured image', error) 
+    } 
+  }
+
   const captureImage = () => {
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current;
@@ -96,6 +113,7 @@ const WebcamCapture = ({
 
         const imageDataUrl = canvas.toDataURL("image/jpeg");
         setCapturedImage(imageDataUrl);
+        saveCapturedImage(imageDataUrl);
         stopWebcam();
         onCaptureComplete?.();
       }
@@ -109,6 +127,7 @@ const WebcamCapture = ({
   useEffect(() => {
     if (resetRequested) {
       setCapturedImage(null);
+      setSavedImageUrl(null);
       startWebcam();
       onResetComplete?.();
     }
