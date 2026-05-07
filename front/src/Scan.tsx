@@ -4,12 +4,46 @@ import "./styles/Scan.css";
 import { FaArrowLeft } from "react-icons/fa"; 
 import { useNavigate } from "react-router-dom";
 
+interface LabelInfo {
+  brand?: string | null;
+  size?: string | null;
+  material?: string | null;
+  care_instructions?: string | null;
+  country_of_origin?: string | null;
+}
+
 function Dashboard() {
   const navigate = useNavigate();
   const [captureRequested, setCaptureRequested] = useState(false);
   const [cameraRunning, setCameraRunning] = useState(false);
   const [captured, setCaptured] = useState(false);
   const [resetRequested, setResetRequested] = useState(false);
+  const [capturedImageData, setCapturedImageData] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const sendImageToBackend = async (imageData: string) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageDataUrl: imageData }),
+      });
+
+      const text = await response.text();
+      if (!response.ok) {
+        throw new Error(`API error ${response.status}: ${text}`);
+      }
+
+      const data: LabelInfo = JSON.parse(text);
+      navigate("/results", { state: { labelInfo: data } });
+    } catch (error) {
+      console.error("Error sending scan request:", error);
+      alert("Failed to process image. Ensure the backend server is running and reachable.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onScanClick = () => {
     if (captured) {
@@ -33,6 +67,11 @@ function Dashboard() {
     setResetRequested(false);
   };
 
+  const onImageCaptured = (imageData: string) => {
+    setCapturedImageData(imageData);
+    sendImageToBackend(imageData);
+  };
+
   return (
     <div className="app">
       {/* Background circles */}
@@ -49,7 +88,18 @@ function Dashboard() {
             onCaptureComplete={onCaptureComplete}
             onResetComplete={onResetComplete}
             onCameraStateChange={setCameraRunning}
+            onImageCaptured={onImageCaptured}
           />
+          {isLoading && (
+            <div style={{
+              textAlign: "center",
+              marginTop: "16px",
+              fontSize: "14px",
+              color: "#666"
+            }}>
+              Processing image...
+            </div>
+          )}
         </div>
         <ScanButton
           onClick={onScanClick}
