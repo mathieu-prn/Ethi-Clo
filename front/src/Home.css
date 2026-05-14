@@ -10,9 +10,9 @@
     width: 120%;
     justify-content: center;
     position: relative;
-    z-index: 1;
-    margin-top: 3%;
-    margin-left: -24%;
+    z-index: 0;
+    margin-top: 5%;
+    margin-left: -23%;
     padding-top: 2%;
     padding-bottom: -10%;
     height: 150px;
@@ -24,19 +24,44 @@
     display: block;
     transform: scale(1.4);
     transform-origin: center;
-    border: 3px solid #41715e;
+    border: 3px solid #1F6F5F;
     }
 }
 
+body {
+  overflow-y: hidden;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(127,209,185,0.3) 0, transparent 60%),
+    radial-gradient(circle at 90% 80%, rgba(200,230,201,0.3) 0, transparent 70%);
+}
+
 .top-buttons {
-  position: center;
-  top: 10px;
-  width: 100%;
+  position: absolute;
+  right: 3%;
+  top: 12%;
+  z-index: 10;
+}
+
+#settings {
+  background-color: #ffffff;
+  border: 2px solid #1F6F5F;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
   display: flex;
-  justify-content: center;
-  padding-bottom: 5%;
-  padding-top: 5%;
-  gap: 5%;
+  align-items: center;
+  justify-self: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.settings-icon {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+  pointer-events: none;
+  margin-left: 16%;
 }
 
 .scan-container {
@@ -50,7 +75,7 @@
 .scan-button {
   background-color: #689884;
   border-bottom: 5px solid #41715e;
-  padding: 15px 150px;
+  padding: 15px 130px;
   border-radius: 8px;
   font-size: 18px;
   font-weight: 600;
@@ -63,14 +88,17 @@
   border-color:  #6a9885;
 }
 
+.history {
+}
+
 .scroll-block {
   margin: 0 auto;
   position: relative;
-  width: 280px;          /* adjust as you want */
-  height: 250px;         /* this creates the scroll area */
-  overflow-y: auto;      /* enables vertical scrolling */
+  width: 270px;          
+  height: 50px;         
+  overflow-y: auto;     
   padding: 15px;
-  background: #e8ffe8;   /* light green like your theme */
+  background: #e8ffe8;   
   border-radius: 12px;
   border: 2px solid #689884;
 }
@@ -90,6 +118,10 @@
   width: 100%;
   border-radius: 6px;
   border: 1px solid #ccc;
+}
+
+.card {
+  padding: 2em;
 }
 
 .read-the-docs {

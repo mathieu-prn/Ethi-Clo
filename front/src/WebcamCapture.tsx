@@ -4,11 +4,10 @@ import styled from "styled-components";
 const WebcamContainer = styled.div`
   position: relative;
   width: 100%;
-    width: 85vw;
-  height: 50vh;
   max-width: 400px;
-  aspect-ratio: 3/4;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
+  margin: 0 auto;
 `;
 
 const WebcamVideo = styled.video`
