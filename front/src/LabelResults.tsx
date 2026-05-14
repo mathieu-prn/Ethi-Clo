@@ -34,6 +34,11 @@ const ResultItem = styled.div`
   border-left: 4px solid #8b5cf6;
 `;
 
+const ScoreItem = styled(ResultItem)`
+  background: #e8ffe8;
+  border-left: 4px solid #41715e;
+`;
+
 const ResultLabel = styled.div`
   font-weight: 600;
   color: #666;
@@ -49,6 +54,7 @@ const ResultValue = styled.div`
   min-height: 24px;
   display: flex;
   align-items: center;
+  font-weight: 500;
   
   &:empty::before {
     content: "N/A";
@@ -62,6 +68,9 @@ interface LabelInfo {
   material?: string | null;
   care_instructions?: string | null;
   country_of_origin?: string | null;
+  ethical_score?: number | null;
+  environmental_score?: number | null;
+  global_score?: number | null;
 }
 
 interface LabelResultsProps {
@@ -73,26 +82,63 @@ const LabelResults = ({ data }: LabelResultsProps) => {
     <ResultsContainer>
       <ResultTitle>Label Information</ResultTitle>
       <ResultGrid>
-        <ResultItem>
-          <ResultLabel>Brand</ResultLabel>
-          <ResultValue>{data.brand || "N/A"}</ResultValue>
-        </ResultItem>
-        <ResultItem>
-          <ResultLabel>Size</ResultLabel>
-          <ResultValue>{data.size || "N/A"}</ResultValue>
-        </ResultItem>
-        <ResultItem>
-          <ResultLabel>Material</ResultLabel>
-          <ResultValue>{data.material || "N/A"}</ResultValue>
-        </ResultItem>
-        <ResultItem>
-          <ResultLabel>Country of Origin</ResultLabel>
-          <ResultValue>{data.country_of_origin || "N/A"}</ResultValue>
-        </ResultItem>
-        <ResultItem style={{ gridColumn: "1 / -1" }}>
-          <ResultLabel>Care Instructions</ResultLabel>
-          <ResultValue>{data.care_instructions || "N/A"}</ResultValue>
-        </ResultItem>
+        
+        {data.brand !== undefined && (
+          <ResultItem>
+            <ResultLabel>Brand</ResultLabel>
+            <ResultValue>{data.brand}</ResultValue>
+          </ResultItem>
+        )}
+
+        {data.size !== undefined && (
+          <ResultItem>
+            <ResultLabel>Size</ResultLabel>
+            <ResultValue>{data.size}</ResultValue>
+          </ResultItem>
+        )}
+
+        {data.material !== undefined && (
+          <ResultItem>
+            <ResultLabel>Material</ResultLabel>
+            <ResultValue>{data.material}</ResultValue>
+          </ResultItem>
+        )}
+
+        {data.country_of_origin !== undefined && (
+          <ResultItem>
+            <ResultLabel>Country of Origin</ResultLabel>
+            <ResultValue>{data.country_of_origin}</ResultValue>
+          </ResultItem>
+        )}
+
+        {data.care_instructions !== undefined && (
+          <ResultItem style={{ gridColumn: "1 / -1" }}>
+            <ResultLabel>Care Instructions</ResultLabel>
+            <ResultValue>{data.care_instructions}</ResultValue>
+          </ResultItem>
+        )}
+
+        {data.ethical_score !== undefined && (
+          <ScoreItem>
+            <ResultLabel>Ethical Score</ResultLabel>
+            <ResultValue>{data.ethical_score}/100</ResultValue>
+          </ScoreItem>
+        )}
+
+        {data.environmental_score !== undefined && (
+          <ScoreItem>
+            <ResultLabel>Environmental Score</ResultLabel>
+            <ResultValue>{data.environmental_score}/100</ResultValue>
+          </ScoreItem>
+        )}
+
+        {data.global_score !== undefined && (
+          <ScoreItem style={{ gridColumn: "1 / -1" }}>
+            <ResultLabel>Global Score</ResultLabel>
+            <ResultValue>{data.global_score}/100</ResultValue>
+          </ScoreItem>
+        )}
+
       </ResultGrid>
     </ResultsContainer>
   );
