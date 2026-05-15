@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from './Home.tsx'
 import Scan from './Scan.tsx'
 import LabelResultsPage from './LabelResultsPage.tsx'
+import Settings from './settings.tsx';
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/scan" element={<Scan />} />
         <Route path="/results" element={<LabelResultsPage />} />
-      </Routes>
+          <Route path="/settings" element={<Settings />} />
+    </Routes>
     </>
   )
 }

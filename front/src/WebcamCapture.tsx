@@ -7,8 +7,9 @@ const WebcamContainer = styled.div`
   width: 85vw;
   height: 50vh;
   max-width: 400px;
-  aspect-ratio: 3/4;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
+  margin: 0 auto;
 `;
 
 const WebcamVideo = styled.video`
