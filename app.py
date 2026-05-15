@@ -36,7 +36,7 @@ def scan_label():
         # Call Gemini API
         client = genai.Client(api_key=api_key)
         response = client.models.generate_content(
-            model='gemini-3-flash-preview',
+            model='gemini-3.1-flash-lite',
             contents=[
                 types.Part.from_bytes(
                     data=image_bytes,

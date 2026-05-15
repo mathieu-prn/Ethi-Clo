@@ -42,6 +42,7 @@ interface WebcamCaptureProps {
   onResetComplete?: () => void;
   onCameraStateChange?: (isRunning: boolean) => void;
   onImageCaptured?: (imageData: string) => void;
+  onConfirm?: (imageData: string) => void;
 }
 
 const WebcamCapture = ({

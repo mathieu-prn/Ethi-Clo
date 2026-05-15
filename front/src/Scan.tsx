@@ -20,6 +20,8 @@ function Dashboard() {
   const [resetRequested, setResetRequested] = useState(false);
   const [capturedImageData, setCapturedImageData] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
+  const [saveRequested, setSaveRequested] = useState(false);
 
   const sendImageToBackend = async (imageData: string) => {
     setIsLoading(true);
@@ -44,8 +46,6 @@ function Dashboard() {
       setIsLoading(false);
     }
   };
-  const [confirmed, setConfirmed] = useState(false);
-  const [saveRequested, setSaveRequested] = useState(false);
 
   const onScanClick = () => {
     if (!cameraRunning) {
@@ -67,12 +67,12 @@ function Dashboard() {
 
   const onImageCaptured = (imageData: string) => {
     setCapturedImageData(imageData);
-    sendImageToBackend(imageData);
   };
 
-  const onConfirm = () => {
+  const onConfirm = (imageData: string) => {
     setConfirmed(true);
     setSaveRequested(true);
+    sendImageToBackend(imageData);
   };
 
   const onRetake = () => {
@@ -98,6 +98,7 @@ function Dashboard() {
             onResetComplete={onResetComplete}
             onCameraStateChange={setCameraRunning}
             onImageCaptured={onImageCaptured}
+            onConfirm={onConfirm}
           />
           {isLoading && (
             <div style={{
@@ -111,7 +112,7 @@ function Dashboard() {
           )}
         </div>
         {captured ? (
-          <ConfirmButtons onConfirm={onConfirm} onRetake={onRetake} />
+          <ConfirmButtons onConfirm={onConfirm} onRetake={onRetake} imageData={capturedImageData} />
         ) : (
           <ScanButton
             onClick={onScanClick}
@@ -139,15 +140,16 @@ function ScanButton({ onClick, disabled, label = "SCAN" }: ScanButtonProps) {
 }
 
 type ConfirmButtonsProps = {
-  onConfirm: () => void;
+  onConfirm: (imageData: string) => void;
   onRetake: () => void;
+  imageData: string | null;
 };
 
-function ConfirmButtons({ onConfirm, onRetake }: ConfirmButtonsProps) {
+function ConfirmButtons({ onConfirm, onRetake, imageData }: ConfirmButtonsProps) {
   return (
     <div className="confirm-buttons">
       <button className="scan-btn" onClick={onRetake}>RETAKE</button>
-      <button className="scan-btn" onClick={onConfirm}>USE PHOTO</button>
+      <button className="scan-btn" onClick={() => onConfirm(imageData || "")}>USE PHOTO</button>
     </div>
   );
 }
