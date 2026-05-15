@@ -6,6 +6,8 @@ const WebcamContainer = styled.div`
   width: 100%;
   width: 85vw;
   height: 50vh;
+  width: 85vw;
+  height: 50vh;
   max-width: 400px;
   aspect-ratio: 3 / 4;
   overflow: hidden;
@@ -39,6 +41,7 @@ interface WebcamCaptureProps {
   onCaptureComplete?: () => void;
   onResetComplete?: () => void;
   onCameraStateChange?: (isRunning: boolean) => void;
+  onImageCaptured?: (imageData: string) => void;
 }
 
 const WebcamCapture = ({
@@ -48,6 +51,7 @@ const WebcamCapture = ({
   onCaptureComplete,
   onResetComplete,
   onCameraStateChange,
+  onImageCaptured,
 }: WebcamCaptureProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -87,17 +91,9 @@ const WebcamCapture = ({
 
   const saveCapturedImage = async (imageDataUrl: string) => { 
     try { 
-      const response = await fetch('/scan/save', { 
-        method: 'POST', 
-        headers: { 'Content-Type': 'application/json' }, 
-        body: JSON.stringify({ imageDataUrl }), }); 
-        if (!response.ok) { 
-          throw new Error('Failed to save captured image') 
-        } 
-        const data = await response.json() 
-        setSavedImageUrl(data.url || '/scan/image.jpg') 
+      setSavedImageUrl(imageDataUrl);
     } catch (error) { 
-      console.error('Failed to save captured image', error) 
+      console.error('Failed to process image', error) 
     } 
   }
 
@@ -115,7 +111,8 @@ const WebcamCapture = ({
 
         const imageDataUrl = canvas.toDataURL("image/jpeg");
         setCapturedImage(imageDataUrl);
-        
+        saveCapturedImage(imageDataUrl);
+        onImageCaptured?.(imageDataUrl);
         stopWebcam();
         onCaptureComplete?.();
       }
