@@ -1,17 +1,53 @@
 import { useState } from "react";
 import WebcamCapture from "./WebcamCapture.tsx";
+import "./styles/Scan.css";
+import { FaArrowLeft } from "react-icons/fa"; 
+import { useNavigate } from "react-router-dom";
+
+interface LabelInfo {
+  brand?: string | null;
+  size?: string | null;
+  material?: string | null;
+  care_instructions?: string | null;
+  country_of_origin?: string | null;
+}
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [captureRequested, setCaptureRequested] = useState(false);
   const [cameraRunning, setCameraRunning] = useState(false);
   const [captured, setCaptured] = useState(false);
   const [resetRequested, setResetRequested] = useState(false);
+  const [capturedImageData, setCapturedImageData] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
+  const [saveRequested, setSaveRequested] = useState(false);
+
+  const sendImageToBackend = async (imageData: string) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageDataUrl: imageData }),
+      });
+
+      const text = await response.text();
+      if (!response.ok) {
+        throw new Error(`API error ${response.status}: ${text}`);
+      }
+
+      const data: LabelInfo = JSON.parse(text);
+      navigate("/results", { state: { labelInfo: data } });
+    } catch (error) {
+      console.error("Error sending scan request:", error);
+      alert("Failed to process image. Ensure the backend server is running and reachable.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onScanClick = () => {
-    if (captured) {
-      setResetRequested(true);
-      return;
-    }
     if (!cameraRunning) {
       alert("Please start the camera first");
       return;
@@ -29,28 +65,61 @@ function Dashboard() {
     setResetRequested(false);
   };
 
+  const onImageCaptured = (imageData: string) => {
+    setCapturedImageData(imageData);
+  };
+
+  const onConfirm = (imageData: string) => {
+    setConfirmed(true);
+    setSaveRequested(true);
+    sendImageToBackend(imageData);
+  };
+
+  const onRetake = () => {
+    setConfirmed(false);
+    setSaveRequested(false);
+    setResetRequested(true);
+  };
+
   return (
     <div className="app">
-      {/* Background circles */}
       <div className="bg-circle-top"></div>
       <div className="bg-circle-bottom"></div>
-
-      {/* Foreground UI */}
       <div className="content">
+        <button className="back-button" onClick={() => navigate("/")}>
+          <FaArrowLeft />
+        </button>
         <div className="card">
           <WebcamCapture
             captureRequested={captureRequested}
             resetRequested={resetRequested}
+            saveRequested={saveRequested}
             onCaptureComplete={onCaptureComplete}
             onResetComplete={onResetComplete}
             onCameraStateChange={setCameraRunning}
+            onImageCaptured={onImageCaptured}
+            onConfirm={onConfirm}
           />
+          {isLoading && (
+            <div style={{
+              textAlign: "center",
+              marginTop: "16px",
+              fontSize: "14px",
+              color: "#666"
+            }}>
+              Processing image...
+            </div>
+          )}
         </div>
-        <ScanButton
-          onClick={onScanClick}
-          disabled={!cameraRunning && !captured}
-          label={captured ? "RETAKE" : "SCAN"}
-        />
+        {captured ? (
+          <ConfirmButtons onConfirm={onConfirm} onRetake={onRetake} imageData={capturedImageData} />
+        ) : (
+          <ScanButton
+            onClick={onScanClick}
+            disabled={!cameraRunning}
+            label="SCAN"
+          />
+        )}
       </div>
     </div>
   );
@@ -67,6 +136,21 @@ function ScanButton({ onClick, disabled, label = "SCAN" }: ScanButtonProps) {
     <button className="scan-btn" onClick={onClick} disabled={disabled}>
       {label}
     </button>
+  );
+}
+
+type ConfirmButtonsProps = {
+  onConfirm: (imageData: string) => void;
+  onRetake: () => void;
+  imageData: string | null;
+};
+
+function ConfirmButtons({ onConfirm, onRetake, imageData }: ConfirmButtonsProps) {
+  return (
+    <div className="confirm-buttons">
+      <button className="scan-btn" onClick={onRetake}>RETAKE</button>
+      <button className="scan-btn" onClick={() => onConfirm(imageData || "")}>USE PHOTO</button>
+    </div>
   );
 }
 

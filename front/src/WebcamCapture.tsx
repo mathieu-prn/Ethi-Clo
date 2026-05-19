@@ -4,8 +4,12 @@ import styled from "styled-components";
 const WebcamContainer = styled.div`
   position: relative;
   width: 100%;
+  width: 85vw;
+  height: 50vh;
+  width: 85vw;
+  height: 50vh;
   max-width: 400px;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   margin: 0 auto;
 `;
@@ -34,17 +38,22 @@ const WebcamCanvas = styled.canvas`
 interface WebcamCaptureProps {
   captureRequested: boolean;
   resetRequested?: boolean;
+  saveRequested?: boolean;
   onCaptureComplete?: () => void;
   onResetComplete?: () => void;
   onCameraStateChange?: (isRunning: boolean) => void;
+  onImageCaptured?: (imageData: string) => void;
+  onConfirm?: (imageData: string) => void;
 }
 
 const WebcamCapture = ({
   captureRequested,
   resetRequested,
+  saveRequested,
   onCaptureComplete,
   onResetComplete,
   onCameraStateChange,
+  onImageCaptured,
 }: WebcamCaptureProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -52,6 +61,7 @@ const WebcamCapture = ({
   // We use stream state to track if the camera is actually active
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [savedImageUrl, setSavedImageUrl] = useState<string | null>(null);
 
   const startWebcam = async () => {
     try {
@@ -81,6 +91,14 @@ const WebcamCapture = ({
     }
   };
 
+  const saveCapturedImage = async (imageDataUrl: string) => { 
+    try { 
+      setSavedImageUrl(imageDataUrl);
+    } catch (error) { 
+      console.error('Failed to process image', error) 
+    } 
+  }
+
   const captureImage = () => {
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current;
@@ -95,6 +113,8 @@ const WebcamCapture = ({
 
         const imageDataUrl = canvas.toDataURL("image/jpeg");
         setCapturedImage(imageDataUrl);
+        saveCapturedImage(imageDataUrl);
+        onImageCaptured?.(imageDataUrl);
         stopWebcam();
         onCaptureComplete?.();
       }
@@ -106,8 +126,15 @@ const WebcamCapture = ({
   }, [stream, onCameraStateChange]);
 
   useEffect(() => {
+    if (saveRequested && capturedImage) {
+      saveCapturedImage(capturedImage);
+    }
+  }, [saveRequested, capturedImage]);
+
+  useEffect(() => {
     if (resetRequested) {
       setCapturedImage(null);
+      setSavedImageUrl(null);
       startWebcam();
       onResetComplete?.();
     }

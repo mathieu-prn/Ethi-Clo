@@ -1,7 +1,7 @@
 import ethiBanner from './assets/ethi-clo.png'
 import settingsIcon from "./assets/settings-icon.png";
 import { useNavigate } from "react-router-dom";
-import "./Home.css"
+import "./styles/Home.css"
 
 function Home() {
     const navigate = useNavigate();
