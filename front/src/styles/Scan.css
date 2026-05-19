@@ -3,7 +3,7 @@ html, body {
 }
 
 .app {
-    margin: 0;
+  margin: 0;
   padding: 0;
   position: relative;
   height: 100vh;
@@ -47,33 +47,100 @@ html, body {
   margin-top: 12vh;
   width: 85vw;
   height: 50vh;
-  background: #e6e6e6;
+  background: #111;
   border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.viewfinder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  height: 70%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.viewfinder::before,
+.viewfinder::after,
+.viewfinder-inner::before,
+.viewfinder-inner::after {
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-color: #ffffff;
+  border-style: solid;
+}
+
+.viewfinder::before      { top: 0; left: 0;  border-width: 3px 0 0 3px; border-radius: 4px 0 0 0; }
+.viewfinder::after       { top: 0; right: 0; border-width: 3px 3px 0 0; border-radius: 0 4px 0 0; }
+.viewfinder-inner::before { bottom: 0; left: 0;  border-width: 0 0 3px 3px; border-radius: 0 0 0 4px; }
+.viewfinder-inner::after  { bottom: 0; right: 0; border-width: 0 3px 3px 0; border-radius: 0 0 4px 0; }
+
+.viewfinder-inner {
+  position: absolute;
+  inset: 0;
+}
+
+.scan-title {
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 3vh;
+  letter-spacing: 1px;
+}
+
+.scan-subtitle {
+  color: rgba(255,255,255,0.6);
+  font-size: 12px;
+  margin-top: 6px;
+  text-align: center;
+  padding: 0 20px;
 }
 
 .scan-btn {
-  margin-top: 4vh;
-  width: 70vw;
-  height: 7vh;
-  background: #a1ceb2;
-  border-radius: 30px;
+  margin-top: 3vh;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: white;
+  border: 4px solid rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: transform 0.15s;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 2px solid #41715e;
-  font-weight: bold;
 }
 
-.scan-btn:active{
-  animation: phoneButtonEffect 0.2s linear;
+.scan-btn:active {
+  transform: scale(0.93);
 }
-@keyframes phoneButtonEffect {
-  50% {
-    transform: scale(1.1)
-  }
-  100% {
-    transform: scale(1)
-  }
+
+.scan-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.confirm-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 3vh;
+}
+
+.confirm-buttons .scan-btn {
+  width: auto;
+  height: auto;
+  border-radius: 30px;
+  padding: 12px 28px;
+  font-weight: bold;
+  font-size: 14px;
+  background: #a1ceb2;
+  border: 2px solid #41715e;
+  color: #333;
 }
 
 .back-button {
@@ -86,4 +153,6 @@ html, body {
   font-size: 4vh;
   font-weight: bold;
   cursor: pointer;
+  color: white;
+  z-index: 10;
 }

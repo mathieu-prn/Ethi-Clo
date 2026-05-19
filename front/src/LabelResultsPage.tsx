@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import LabelResults from "./LabelResults";
-import "./styles/Scan.css";
+import "./styles/labelresults.css";
 
 interface LabelInfo {
   brand?: string | null;
@@ -63,7 +63,7 @@ function LabelResultsPage() {
           <FaArrowLeft />
         </button>
 
-        <div className="card" style={{ padding: "24px" }}>
+        <div className="card-container" style={{ padding: "24px" }}>
           {filteredInfo && Object.keys(filteredInfo).length > 0 ? (
             <>
               <h1 style={{ marginBottom: "16px", textAlign: "center" }}>

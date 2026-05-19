@@ -1,7 +1,7 @@
 import { useState } from "react";
 import WebcamCapture from "./WebcamCapture.tsx";
 import "./styles/Scan.css";
-import { FaArrowLeft } from "react-icons/fa"; 
+import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 interface LabelInfo {
@@ -89,6 +89,7 @@ function Dashboard() {
         <button className="back-button" onClick={() => navigate("/")}>
           <FaArrowLeft />
         </button>
+
         <div className="card">
           <WebcamCapture
             captureRequested={captureRequested}
@@ -100,56 +101,45 @@ function Dashboard() {
             onImageCaptured={onImageCaptured}
             onConfirm={onConfirm}
           />
+          {!captured && (
+            <div className="viewfinder">
+              <div className="viewfinder-inner"></div>
+            </div>
+          )}
           {isLoading && (
             <div style={{
+              position: "absolute",
+              bottom: 12,
+              width: "100%",
               textAlign: "center",
-              marginTop: "16px",
-              fontSize: "14px",
-              color: "#666"
+              fontSize: "13px",
+              color: "rgba(255,255,255,0.8)",
+              zIndex: 3,
             }}>
               Processing image...
             </div>
           )}
         </div>
+
+        {!captured && (
+          <p className="scan-subtitle">
+            Point your camera at the label and capture
+          </p>
+        )}
+
         {captured ? (
-          <ConfirmButtons onConfirm={onConfirm} onRetake={onRetake} imageData={capturedImageData} />
+          <div className="confirm-buttons">
+            <button className="scan-btn" onClick={onRetake}>RETAKE</button>
+            <button className="scan-btn" onClick={() => onConfirm(capturedImageData || "")}>USE PHOTO</button>
+          </div>
         ) : (
-          <ScanButton
+          <button
+            className="scan-btn"
             onClick={onScanClick}
             disabled={!cameraRunning}
-            label="SCAN"
           />
         )}
       </div>
-    </div>
-  );
-}
-
-type ScanButtonProps = {
-  onClick: () => void;
-  disabled?: boolean;
-  label?: string;
-};
-
-function ScanButton({ onClick, disabled, label = "SCAN" }: ScanButtonProps) {
-  return (
-    <button className="scan-btn" onClick={onClick} disabled={disabled}>
-      {label}
-    </button>
-  );
-}
-
-type ConfirmButtonsProps = {
-  onConfirm: (imageData: string) => void;
-  onRetake: () => void;
-  imageData: string | null;
-};
-
-function ConfirmButtons({ onConfirm, onRetake, imageData }: ConfirmButtonsProps) {
-  return (
-    <div className="confirm-buttons">
-      <button className="scan-btn" onClick={onRetake}>RETAKE</button>
-      <button className="scan-btn" onClick={() => onConfirm(imageData || "")}>USE PHOTO</button>
     </div>
   );
 }

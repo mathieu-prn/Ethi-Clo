@@ -151,7 +151,7 @@ const Settings: React.FC = () => {
 
         <div className="settings-footer">
           <button className="back-button-bottom" onClick={() => navigate('/')}>
-            Back to Home
+            Save & Quit
           </button>
         </div>
 
