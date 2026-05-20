@@ -54,10 +54,7 @@ function LabelResultsPage() {
   }, [originalLabelInfo]);
 
   return (
-    <div className="app">
-      <div className="bg-circle-top"></div>
-      <div className="bg-circle-bottom"></div>
-
+    <div className="app-results">
       <div className="content">
         <button className="back-button" onClick={() => navigate("/scan")}>
           <FaArrowLeft />
@@ -72,9 +69,11 @@ function LabelResultsPage() {
               <LabelResults data={filteredInfo} />
             </>
           ) : (
-            <div style={{ textAlign: "center", padding: "32px" }}>
+            <div className="empty-state">
               <p>No scan results available or all parameters are hidden.</p>
-              <button className="scan-btn" onClick={() => navigate("/scan")}>Return to Scan</button>
+              <button className="back-to-scan-btn" onClick={() => navigate("/scan")}>
+                <FaArrowLeft /> Return to Scan
+              </button>
             </div>
           )}
         </div>

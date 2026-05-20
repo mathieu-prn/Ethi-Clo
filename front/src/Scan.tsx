@@ -83,43 +83,40 @@ function Dashboard() {
 
   return (
     <div className="app">
-      <div className="bg-circle-top"></div>
-      <div className="bg-circle-bottom"></div>
-      <div className="content">
-        <button className="back-button" onClick={() => navigate("/")}>
-          <FaArrowLeft />
-        </button>
+      <header className="scan-header">
+        <section className="banner">
+          <h1 className="scan-title">Scan Label</h1>
+        </section>
+      </header>
+      
+        <div className="content">
+          <button className="back-button" onClick={() => navigate("/")}>
+            <FaArrowLeft />
+          </button>
 
-        <div className="card">
-          <WebcamCapture
-            captureRequested={captureRequested}
-            resetRequested={resetRequested}
-            saveRequested={saveRequested}
-            onCaptureComplete={onCaptureComplete}
-            onResetComplete={onResetComplete}
-            onCameraStateChange={setCameraRunning}
-            onImageCaptured={onImageCaptured}
-            onConfirm={onConfirm}
-          />
-          {!captured && (
-            <div className="viewfinder">
-              <div className="viewfinder-inner"></div>
-            </div>
-          )}
-          {isLoading && (
-            <div style={{
-              position: "absolute",
-              bottom: 12,
-              width: "100%",
-              textAlign: "center",
-              fontSize: "13px",
-              color: "rgba(255,255,255,0.8)",
-              zIndex: 3,
-            }}>
-              Processing image...
-            </div>
-          )}
-        </div>
+          <div className="card">
+            <WebcamCapture
+              captureRequested={captureRequested}
+              resetRequested={resetRequested}
+              saveRequested={saveRequested}
+              onCaptureComplete={onCaptureComplete}
+              onResetComplete={onResetComplete}
+              onCameraStateChange={setCameraRunning}
+              onImageCaptured={onImageCaptured}
+              onConfirm={onConfirm}
+            />
+            {!captured && (
+              <div className="viewfinder">
+                <div className="viewfinder-inner"></div>
+              </div>
+            )}
+            {isLoading && (
+              <div className="loading-overlay">
+                <div className="loading-spinner"></div>
+                <p className="loading-text">Analyzing label...</p>
+              </div>
+            )}
+          </div>
 
         {!captured && (
           <p className="scan-subtitle">

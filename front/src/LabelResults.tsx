@@ -31,7 +31,7 @@ const ResultItem = styled.div`
   padding: 12px;
   background: #f5f5f5;
   border-radius: 8px;
-  border-left: 4px solid #8b5cf6;
+  border-left: 4px solid #5A8C89;
 `;
 
 const ScoreItem = styled(ResultItem)`
