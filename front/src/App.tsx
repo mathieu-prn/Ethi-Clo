@@ -1,19 +1,18 @@
-import { useState } from 'react'
-import './App.css'
+import './styles/App.css'
 import { Routes, Route } from "react-router-dom";
 import Home from './Home.tsx'
 import Scan from './Scan.tsx'
-import Settings from "./Settings"
+import LabelResultsPage from './LabelResultsPage.tsx'
+import Settings from './settings.tsx';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-    <Routes>
+      <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Scan" element={<Scan />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/scan" element={<Scan />} />
+        <Route path="/results" element={<LabelResultsPage />} />
+          <Route path="/settings" element={<Settings />} />
     </Routes>
     </>
   )

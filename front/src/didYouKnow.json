@@ -1,0 +1,82 @@
+[
+  {
+    "fact": "Producing a single pair of jeans requires around 7,500 liters of water — equivalent to 10 years of drinking water for one person.",
+    "highlight": "7,500 liters of water",
+    "tags": [
+      "Water",
+      "Cotton"
+    ]
+  },
+  {
+    "fact": "The fashion industry accounts for 10% of global CO₂ emissions — more than aviation and maritime shipping combined.",
+    "highlight": "10% of global CO₂ emissions",
+    "tags": [
+      "Climate",
+      "Pollution"
+    ]
+  },
+  {
+    "fact": "Every year, 92 million tonnes of textile waste are generated worldwide. Only 1% of clothing is actually recycled.",
+    "highlight": "92 million tonnes",
+    "tags": [
+      "Waste",
+      "Recycling"
+    ]
+  },
+  {
+    "fact": "Polyester is derived from petroleum and takes over 200 years to decompose. Yet it makes up 52% of all textile fibers worldwide.",
+    "highlight": "200 years to decompose",
+    "tags": [
+      "Polyester",
+      "Petroleum"
+    ]
+  },
+  {
+    "fact": "Fast fashion produces twice as many clothes as it did 20 years ago. A garment is worn on average only 7 to 10 times before being thrown away.",
+    "highlight": "7 to 10 times",
+    "tags": [
+      "Fast fashion",
+      "Overconsumption"
+    ]
+  },
+  {
+    "fact": "Organic cotton uses 91% less water than conventional cotton and requires no chemical pesticides.",
+    "highlight": "91% less water",
+    "tags": [
+      "Organic cotton",
+      "Water"
+    ]
+  },
+  {
+    "fact": "Textile dyeing is the second largest polluter of clean water globally, releasing toxic chemicals directly into rivers and streams.",
+    "highlight": "second largest water polluter",
+    "tags": [
+      "Dyeing",
+      "Pollution"
+    ]
+  },
+  {
+    "fact": "Wearing a garment just 9 months longer reduces its carbon, water and waste footprint by 20 to 30%.",
+    "highlight": "20 to 30% less impact",
+    "tags": [
+      "Durability",
+      "Tip"
+    ]
+  },
+  {
+    "fact": "75 million people work in the global textile industry. 80% are women, often paid well below a living wage.",
+    "highlight": "75 million workers",
+    "tags": [
+      "People",
+      "Ethics"
+    ]
+  },
+  {
+    "fact": "Washing synthetic clothes releases up to 700,000 microplastic fibers per cycle, which end up in our oceans.",
+    "highlight": "700,000 microfibers per wash",
+    "tags": [
+      "Microplastics",
+      "Ocean"
+    ]
+  }
+]

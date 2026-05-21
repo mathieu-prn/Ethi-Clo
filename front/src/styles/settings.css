@@ -65,7 +65,7 @@ body, html {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ff4d4d;
+  background-color: #555555;
   transition: .3s;
   border-radius: 34px;
 }

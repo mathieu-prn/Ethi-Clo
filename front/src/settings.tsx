@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Settings.css';
+import './styles/settings.css';
 
 interface EthiCloSettings {
   brand: boolean;
@@ -151,7 +151,7 @@ const Settings: React.FC = () => {
 
         <div className="settings-footer">
           <button className="back-button-bottom" onClick={() => navigate('/')}>
-            Back to Home
+            Save & Quit
           </button>
         </div>
 

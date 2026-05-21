@@ -1,0 +1,206 @@
+html, body {
+  overflow: hidden;
+}
+
+.scan-header {
+  background: #F1F7ED;        /* green top bar */
+  width: 100%;                /* extends beyond screen */
+  margin-left: calc(50% - 50vw); 
+  padding: 20px 0;            /* vertical spacing */ 
+
+  border-bottom-left-radius: 35%;     /* smooth round bottom */
+  border-bottom-right-radius: 35%;
+  overflow: hidden;                    /* ensures clean rounding */
+  position: absolute;
+  border-bottom: 4px solid #5A8C89; /* subtle border for definition */
+  height: 8%;
+}
+
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.scan-title {
+  font-family: 'Bebas Neue', sans-serif;
+  color: #5A8C89;
+  transform: scaleX(1) scaleY(1.3);
+  display: inline-block;
+  font-weight: 600;        /* stronger impact */
+  letter-spacing: 8px;     /* spaced-out look */
+  text-transform: uppercase;
+  font-size: 1.5rem;         /* adjust as needed */
+  text-shadow: #b6b4a4 2px 2px 0;
+  margin-top: 1vh; 
+  margin-left: 3%;
+}
+
+.app {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;background:
+    linear-gradient(
+      to bottom,
+      #5A8C89 20%,
+      #73B697 30%,
+      #AACABB 50%,
+      #F1F7ED 75%
+    );
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card {
+  margin-top: 14vh;
+  width: 85vw;
+  height: 50vh;
+  position: relative;
+  overflow: hidden;
+  filter: drop-shadow(0 10px 5px rgb(90, 140, 137, 0.6));
+}
+
+.viewfinder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.viewfinder::before,
+.viewfinder::after,
+.viewfinder-inner::before,
+.viewfinder-inner::after {
+  content: "";
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-color: #ffffff;
+  border-style: solid;
+}
+
+.viewfinder::before      { top: 0; left: 0;  border-width: 3px 0 0 3px; border-radius: 4px 0 0 0; }
+.viewfinder::after       { top: 0; right: 0; border-width: 3px 3px 0 0; border-radius: 0 4px 0 0; }
+.viewfinder-inner::before { bottom: 0; left: 0;  border-width: 0 0 3px 3px; border-radius: 0 0 0 4px; }
+.viewfinder-inner::after  { bottom: 0; right: 0; border-width: 0 3px 3px 0; border-radius: 0 0 4px 0; }
+
+.viewfinder-inner {
+  position: absolute;
+  inset: 0;
+}
+
+.scan-subtitle {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 12px;
+  margin-top: -5%;
+  text-align: center;
+}
+
+.scan-btn {
+  margin-top: 2%;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: white;
+  border: 4px solid rgba(90, 140, 137, 0.8);
+  cursor: pointer;
+  transition: transform 0.15s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  filter: drop-shadow(0 3px 5px rgb(90, 140, 137, 0.6));
+}
+
+.scan-btn:active {
+  transform: scale(0.93);
+}
+
+.scan-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.confirm-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 3vh;
+}
+
+.confirm-buttons .scan-btn {
+  width: auto;
+  height: auto;
+  border-radius: 30px;
+  padding: 12px 28px;
+  font-weight: bold;
+  font-size: 14px;
+  background: #AACABB;
+  border: 2px solid #5A8C89;
+  color: #333;
+}
+
+.loading-overlay {
+  width: 83%;
+  height: 84%;
+  margin: auto;
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #5DCAA5;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  color: white;
+  margin-top: 20px;
+  font-size: 16px;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+.back-button {
+  position: absolute;
+  padding: 10px;
+  top: 15px;
+  left: 1vw;
+  background: none;
+  border: none;
+  font-size: 4vh;
+  font-weight: bold;
+  cursor: pointer;
+  color: #5A8C89;
+  z-index: 10;
+}
