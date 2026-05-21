@@ -94,3 +94,17 @@
   gap: 8px;
   filter: drop-shadow(0 3px 5px rgba(90, 140, 137, 0.6));
 }
+
+.back-button-results {
+  position: absolute;
+  padding: 10px;
+  top: 15px;
+  left: 1vw;
+  background: none;
+  border: none;
+  font-size: 4vh;
+  font-weight: bold;
+  cursor: pointer;
+  color: #ffffff;
+  z-index: 1000;
+}

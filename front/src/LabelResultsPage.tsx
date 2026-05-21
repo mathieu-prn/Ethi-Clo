@@ -56,7 +56,7 @@ function LabelResultsPage() {
   return (
     <div className="app-results">
       <div className="content">
-        <button className="back-button" onClick={() => navigate("/scan")}>
+        <button className="back-button-results" onClick={() => navigate("/scan")}>
           <FaArrowLeft />
         </button>
 
