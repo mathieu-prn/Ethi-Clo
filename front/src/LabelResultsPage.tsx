@@ -32,10 +32,7 @@ function LabelResultsPage() {
           if (labelInfoWithScores.ethical_score !== null) newInfo.ethical_score = labelInfoWithScores.ethical_score;
           if (labelInfoWithScores.environmental_score !== null) newInfo.environmental_score = labelInfoWithScores.environmental_score;
         }
-        
-        if (settings.globalScore && labelInfoWithScores.global_score !== null) {
-          newInfo.global_score = labelInfoWithScores.global_score;
-        }
+        if (labelInfoWithScores.global_score !== null) newInfo.global_score = labelInfoWithScores.global_score;
 
         setFilteredInfo(newInfo);
       } else {

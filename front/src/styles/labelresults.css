@@ -4,7 +4,6 @@
   position: relative;
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
   background: linear-gradient(
     to bottom,
     #5A8C89 15%,
@@ -40,25 +39,11 @@
   margin-top: 1vh;
 }
 
-.back-button {
-  position: absolute;
-  padding: 10px;
-  top: 15px;
-  left: 1vw;
-  background: none;
-  border: none;
-  font-size: 4vh;
-  font-weight: bold;
-  cursor: pointer;
-  color: #5A8C89;
-  z-index: 10;
-}
-
 .content {
   position: relative;
   z-index: 1;
-  height: 100%;
   display: flex;
+  height: auto;
   flex-direction: column;
   align-items: center;
 }
