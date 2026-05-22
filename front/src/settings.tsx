@@ -48,15 +48,6 @@ const Settings: React.FC = () => {
     }));
   };
 
-  const handleGlobalToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isChecked = e.target.checked;
-    setSettings((prev) => ({
-      ...prev,
-      globalScore: isChecked,
-      detailedScore: !isChecked,
-    }));
-  };
-
   return (
     <div id="settings-page">
       <div className="settings-container">
