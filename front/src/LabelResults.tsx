@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import type { ScoredLabelInfo } from "./scoreCalculator";
 
 const ResultsContainer = styled.div`
   width: 100%;
@@ -83,56 +84,56 @@ const LabelResults = ({ data }: LabelResultsProps) => {
       <ResultTitle>Label Information</ResultTitle>
       <ResultGrid>
         
-        {data.brand !== undefined && (
+        {data.brand != null && (
           <ResultItem>
             <ResultLabel>Brand</ResultLabel>
-            <ResultValue>{data.brand}</ResultValue>
+            <ResultValue>{data.brand || "Unknown"}</ResultValue>
           </ResultItem>
         )}
 
-        {data.size !== undefined && (
+        {data.size != null && (
           <ResultItem>
             <ResultLabel>Size</ResultLabel>
-            <ResultValue>{data.size}</ResultValue>
+            <ResultValue>{data.size || "Unknown"}</ResultValue>
           </ResultItem>
         )}
 
-        {data.material !== undefined && (
+        {data.material != null && (
           <ResultItem>
             <ResultLabel>Material</ResultLabel>
-            <ResultValue>{data.material}</ResultValue>
+            <ResultValue>{data.material || "Unknown"}</ResultValue>
           </ResultItem>
         )}
 
-        {data.country_of_origin !== undefined && (
+        {data.country_of_origin != null && (
           <ResultItem>
             <ResultLabel>Country of Origin</ResultLabel>
-            <ResultValue>{data.country_of_origin}</ResultValue>
+            <ResultValue>{data.country_of_origin || "Unknown"}</ResultValue>
           </ResultItem>
         )}
 
-        {data.care_instructions !== undefined && (
+        {data.care_instructions != null && (
           <ResultItem style={{ gridColumn: "1 / -1" }}>
             <ResultLabel>Care Instructions</ResultLabel>
-            <ResultValue>{data.care_instructions}</ResultValue>
+            <ResultValue>{data.care_instructions || "Unknown"}</ResultValue>
           </ResultItem>
         )}
 
-        {data.ethical_score !== undefined && (
+        {data.ethical_score != null && (
           <ScoreItem>
             <ResultLabel>Ethical Score</ResultLabel>
             <ResultValue>{data.ethical_score}/100</ResultValue>
           </ScoreItem>
         )}
 
-        {data.environmental_score !== undefined && (
+        {data.environmental_score != null && (
           <ScoreItem>
             <ResultLabel>Environmental Score</ResultLabel>
             <ResultValue>{data.environmental_score}/100</ResultValue>
           </ScoreItem>
         )}
 
-        {data.global_score !== undefined && (
+        {data.global_score != null && (
           <ScoreItem style={{ gridColumn: "1 / -1" }}>
             <ResultLabel>Global Score</ResultLabel>
             <ResultValue>{data.global_score}/100</ResultValue>
