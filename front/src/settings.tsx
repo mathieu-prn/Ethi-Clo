@@ -9,7 +9,6 @@ interface EthiCloSettings {
   care: boolean;
   country: boolean;
   detailedScore: boolean;
-  globalScore: boolean;
 }
 
 const defaultSettings: EthiCloSettings = {
@@ -19,7 +18,6 @@ const defaultSettings: EthiCloSettings = {
   care: true,
   country: true,
   detailedScore: true,
-  globalScore: false,
 };
 
 const Settings: React.FC = () => {
@@ -47,15 +45,6 @@ const Settings: React.FC = () => {
       ...prev,
       detailedScore: isChecked,
       globalScore: !isChecked,
-    }));
-  };
-
-  const handleGlobalToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isChecked = e.target.checked;
-    setSettings((prev) => ({
-      ...prev,
-      globalScore: isChecked,
-      detailedScore: !isChecked,
     }));
   };
 
@@ -132,18 +121,6 @@ const Settings: React.FC = () => {
               type="checkbox"
               checked={settings.detailedScore}
               onChange={handleDetailedToggle}
-            />
-            <span className="slider"></span>
-          </label>
-        </div>
-
-        <div className="setting-item">
-          <span>Global Score</span>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={settings.globalScore}
-              onChange={handleGlobalToggle}
             />
             <span className="slider"></span>
           </label>
