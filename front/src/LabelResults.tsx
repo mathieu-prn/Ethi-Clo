@@ -63,8 +63,19 @@ const ResultValue = styled.div`
   }
 `;
 
+interface LabelInfo {
+  brand?: string | null;
+  size?: string | null;
+  material?: string | null;
+  care_instructions?: string | null;
+  country_of_origin?: string | null;
+  ethical_score?: number | null;
+  environmental_score?: number | null;
+  global_score?: number | null;
+}
+
 interface LabelResultsProps {
-  data: ScoredLabelInfo;
+  data: LabelInfo;
 }
 
 const LabelResults = ({ data }: LabelResultsProps) => {
