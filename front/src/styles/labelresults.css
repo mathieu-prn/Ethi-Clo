@@ -1,110 +1,248 @@
+/* Palette de couleurs
+   Background: #F1EFE0
+   Léger: #AACABB
+   Moyen: #73B697
+   Foncé: #5A8C89 
+*/
+
 .app-results {
   margin: 0;
   padding: 0;
   position: relative;
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
-  background: linear-gradient(
-    to bottom,
-    #5A8C89 15%,
-    #73B697 35%,
-    #AACABB 55%,
-    #F1F7ED 75%
-  );
-}
-
-.scan-header {
-  background: #F1F7ED;
-  width: 100%;
-  margin-left: calc(50% - 50vw);
-  padding: 20px 0;
-  border-bottom-left-radius: 35%;
-  border-bottom-right-radius: 35%;
-  overflow: hidden;
-  position: absolute;
-  border-bottom: 4px solid #5A8C89;
-  height: 8%;
-}
-
-.scan-title {
-  font-family: 'Bebas Neue', sans-serif;
-  color: #5A8C89;
-  transform: scaleX(1) scaleY(1.3);
-  display: inline-block;
-  font-weight: 600;
-  letter-spacing: 8px;
-  text-transform: uppercase;
-  font-size: 1.5rem;
-  text-shadow: #b6b4a4 2px 2px 0;
-  margin-top: 1vh;
-}
-
-.back-button {
-  position: absolute;
-  padding: 10px;
-  top: 15px;
-  left: 1vw;
-  background: none;
-  border: none;
-  font-size: 4vh;
-  font-weight: bold;
-  cursor: pointer;
-  color: #5A8C89;
-  z-index: 10;
-}
-
-.content {
-  position: relative;
-  z-index: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.empty-state {
-  margin-top: 20vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 32px;
-  padding: 0 24px;
-  text-align: center;
-}
-
-.empty-state p {
-  color: white;
-  font-size: 16px;
-  opacity: 0.85;
-  line-height: 1.6;
-}
-
-.back-to-scan-btn {
-  background: #F1F7ED;
-  border: 2px solid #5A8C89;
-  border-radius: 30px;
-  padding: 12px 28px;
-  font-weight: bold;
-  font-size: 14px;
-  color: #5A8C89;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  filter: drop-shadow(0 3px 5px rgba(90, 140, 137, 0.6));
+  background-color: #F1EFE0;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden; /* Empêche le scroll de toute la page pour le bottom sheet */
 }
 
 .back-button-results {
   position: absolute;
-  padding: 10px;
-  top: 15px;
-  left: 1vw;
-  background: none;
-  border: none;
-  font-size: 4vh;
-  font-weight: bold;
+  top: 25px;
+  left: 20px;
+  background: #ffffff;
+  border: 2px solid #5A8C89;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  color: #ffffff;
-  z-index: 1000;
+  z-index: 2000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Force la couleur et la taille de l'icône de retour pour qu'elle soit visible */
+.back-icon, .back-button-results svg {
+  fill: #5A8C89 !important;
+  color: #5A8C89 !important;
+  width: 28px; 
+  height: 28px; 
+}
+
+/* --- STRUCTURE PRINCIPALE --- */
+.results-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.results-upper-section {
+  padding: 80px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* --- ESPACE IMAGE --- */
+.image-placeholder {
+  width: 100%;
+  max-width: 350px;
+  height: 220px;
+  background-color: #ffffff;
+  border: 2px dashed #AACABB;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  font-weight: bold;
+  color: #AACABB;
+  letter-spacing: 2px;
+}
+
+.item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- SECTION SCORES --- */
+.scores-overlay {
+  width: 95%;
+  max-width: 380px;
+  margin-top: -15px; /* Décalage pour superposer légèrement sur l'image */
+  z-index: 10;
+}
+
+.scores-grid-2 {
+  display: flex;
+  gap: 12px;
+}
+
+.scores-grid-1 {
+  display: flex;
+  justify-content: center;
+}
+
+.score-card {
+  background: white;
+  border-radius: 15px;
+  padding: 12px;
+  flex: 1;
+  box-shadow: 0 8px 20px rgba(90, 140, 137, 0.2);
+  border: 1px solid #AACABB;
+}
+
+.scores-grid-1 .score-card {
+  max-width: 250px;
+  width: 100%;
+}
+
+.score-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.score-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: #5A8C89;
+  text-transform: uppercase;
+}
+
+.score-value {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.progress-container {
+  width: 100%;
+  height: 8px;
+  background: #2c3e3a;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  transition: width 1.5s ease-in-out, background-color 1.5s;
+}
+
+/* --- BOTTOM SHEET (MENU COULISSANT) --- */
+.details-drawer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 55%; /* Hauteur de base du tiroir */
+  background: white;
+  border-top-left-radius: 35px;
+  border-top-right-radius: 35px;
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  transition: height 0.3s ease;
+}
+
+.drawer-handle {
+  width: 50px;
+  height: 5px;
+  background: #AACABB;
+  border-radius: 10px;
+  margin: 15px auto;
+  flex-shrink: 0;
+}
+
+.drawer-content {
+  flex-grow: 1;
+  overflow-y: auto; /* Permet de scroller le contenu si la liste est longue */
+  padding: 0 25px 40px;
+}
+
+.drawer-title {
+  color: #5A8C89;
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.parameters-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.param-item {
+  background: #F9F9F7;
+  border-radius: 15px;
+  padding: 15px;
+  border-left: 5px solid #73B697;
+  display: flex;
+  flex-direction: column;
+}
+
+.param-title {
+  font-size: 11px;
+  color: #5A8C89;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.param-data {
+  font-size: 15px;
+  color: #333;
+  font-weight: 500;
+}
+
+/* --- MESSAGES D'ÉTAT VIDE --- */
+.no-data-message {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 16px;
+  border-radius: 15px;
+  text-align: center;
+  color: #5A8C89;
+  font-weight: 500;
+  font-size: 14px;
+  border: 1.5px dashed #AACABB;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.empty-state {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #5A8C89;
+}
+
+.back-to-scan-btn {
+  background: #ffffff;
+  border: 2px solid #5A8C89;
+  border-radius: 30px;
+  padding: 10px 20px;
+  font-weight: bold;
+  color: #5A8C89;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
 }

@@ -13,13 +13,13 @@ interface EthiCloSettings {
 }
 
 const defaultSettings: EthiCloSettings = {
-  brand: true,
-  size: true,
-  material: true,
-  care: true,
-  country: true,
-  detailedScore: true,
-  globalScore: false,
+  brand: false,
+  size: false,
+  material: false,
+  care: false,
+  country: false,
+  detailedScore: false,
+  globalScore: true,
 };
 
 const Settings: React.FC = () => {
@@ -41,12 +41,11 @@ const Settings: React.FC = () => {
     }));
   };
 
-  const handleDetailedToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleDetailedToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
     setSettings((prev) => ({
       ...prev,
       detailedScore: isChecked,
-      globalScore: !isChecked,
     }));
   };
 
@@ -55,7 +54,6 @@ const Settings: React.FC = () => {
     setSettings((prev) => ({
       ...prev,
       globalScore: isChecked,
-      detailedScore: !isChecked,
     }));
   };
 
@@ -131,7 +129,7 @@ const Settings: React.FC = () => {
             <input
               type="checkbox"
               checked={settings.detailedScore}
-              onChange={handleDetailedToggle}
+              onChange={() => handleToggle('detailedScore')}
             />
             <span className="slider"></span>
           </label>
@@ -143,7 +141,7 @@ const Settings: React.FC = () => {
             <input
               type="checkbox"
               checked={settings.globalScore}
-              onChange={handleGlobalToggle}
+              onChange={() => handleToggle('globalScore')}
             />
             <span className="slider"></span>
           </label>
