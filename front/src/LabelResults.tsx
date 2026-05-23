@@ -1,66 +1,4 @@
-import styled from "styled-components";
-
-const ResultsContainer = styled.div`
-  width: 100%;
-  max-width: 85%;
-  background: white;
-  border-radius: 15px;
-  padding: 24px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-`;
-
-const ResultTitle = styled.h2`
-  color: #333;
-  margin: 0 0 20px 0;
-  text-align: center;
-  font-size: 24px;
-`;
-
-const ResultGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  
-  @media (max-width: 500px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const ResultItem = styled.div`
-  padding: 12px;
-  background: #f5f5f5;
-  border-radius: 8px;
-  border-left: 4px solid #5A8C89;
-`;
-
-const ScoreItem = styled(ResultItem)`
-  background: #e8ffe8;
-  border-left: 4px solid #41715e;
-`;
-
-const ResultLabel = styled.div`
-  font-weight: 600;
-  color: #666;
-  font-size: 12px;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-`;
-
-const ResultValue = styled.div`
-  color: #333;
-  font-size: 16px;
-  word-break: break-word;
-  min-height: 24px;
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  
-  &:empty::before {
-    content: "N/A";
-    color: #ccc;
-  }
-`;
+import React, { useEffect, useState } from "react";
 
 interface LabelInfo {
   brand?: string | null;
@@ -71,76 +9,131 @@ interface LabelInfo {
   ethical_score?: number | null;
   environmental_score?: number | null;
   global_score?: number | null;
+  imageUrl?: string | null;
 }
 
 interface LabelResultsProps {
   data: LabelInfo;
 }
 
-const LabelResults = ({ data }: LabelResultsProps) => {
+const ScoreBar = ({ score, label }: { score: number; label: string }) => {
+  const [width, setWidth] = useState(0);
+  const [color, setColor] = useState("#ff4d4d");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setWidth(score);
+      const hue = (score / 100) * 120;
+      setColor(`hsl(${hue}, 90%, 45%)`);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [score]);
+
   return (
-    <ResultsContainer>
-      <ResultTitle>Label Information</ResultTitle>
-      <ResultGrid>
-        
-        {data.brand !== undefined && (
-          <ResultItem>
-            <ResultLabel>Brand</ResultLabel>
-            <ResultValue>{data.brand}</ResultValue>
-          </ResultItem>
-        )}
+    <div className="score-card">
+      <div className="score-header">
+        <span className="score-label">{label}</span>
+        <span className="score-value" style={{ color: color }}>{score}%</span>
+      </div>
+      <div className="progress-container">
+        <div
+          className="progress-fill"
+          style={{ width: `${width}%`, backgroundColor: color, boxShadow: `0 0 12px ${color}` }}
+        />
+      </div>
+    </div>
+  );
+};
 
-        {data.size !== undefined && (
-          <ResultItem>
-            <ResultLabel>Size</ResultLabel>
-            <ResultValue>{data.size}</ResultValue>
-          </ResultItem>
-        )}
+const LabelResults = ({ data }: LabelResultsProps) => {
+  const showDualScores = data.ethical_score != null || data.environmental_score != null;
+  const showGlobalScore = data.global_score != null && !showDualScores;
+  
+  const hasScores = showDualScores || data.global_score != null;
+  const hasParameters = data.brand || data.size || data.material || data.country_of_origin || data.care_instructions;
 
-        {data.material !== undefined && (
-          <ResultItem>
-            <ResultLabel>Material</ResultLabel>
-            <ResultValue>{data.material}</ResultValue>
-          </ResultItem>
-        )}
+  return (
+    <div className="results-wrapper">
+      <div className="results-upper-section">
+        <div className="image-placeholder">
+          {data.imageUrl ? (
+            <img src={data.imageUrl} alt="Item" className="item-image" />
+          ) : (
+            <span>IMAGE</span>
+          )}
+        </div>
 
-        {data.country_of_origin !== undefined && (
-          <ResultItem>
-            <ResultLabel>Country of Origin</ResultLabel>
-            <ResultValue>{data.country_of_origin}</ResultValue>
-          </ResultItem>
-        )}
+        <div className="scores-overlay">
+          {hasScores ? (
+            <>
+              {showDualScores && (
+                <div className="scores-grid-2">
+                  {data.ethical_score != null && <ScoreBar score={data.ethical_score} label="Ethical" />}
+                  {data.environmental_score != null && <ScoreBar score={data.environmental_score} label="Env." />}
+                </div>
+              )}
+              {showGlobalScore && (
+                <div className="scores-grid-1">
+                  <ScoreBar score={data.global_score!} label="Global Score" />
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="no-data-message">
+              No score available for this item.
+            </div>
+          )}
+        </div>
+      </div>
 
-        {data.care_instructions !== undefined && (
-          <ResultItem style={{ gridColumn: "1 / -1" }}>
-            <ResultLabel>Care Instructions</ResultLabel>
-            <ResultValue>{data.care_instructions}</ResultValue>
-          </ResultItem>
-        )}
-
-        {data.ethical_score !== undefined && (
-          <ScoreItem>
-            <ResultLabel>Ethical Score</ResultLabel>
-            <ResultValue>{data.ethical_score}/100</ResultValue>
-          </ScoreItem>
-        )}
-
-        {data.environmental_score !== undefined && (
-          <ScoreItem>
-            <ResultLabel>Environmental Score</ResultLabel>
-            <ResultValue>{data.environmental_score}/100</ResultValue>
-          </ScoreItem>
-        )}
-
-        {data.global_score !== undefined && (
-          <ScoreItem style={{ gridColumn: "1 / -1" }}>
-            <ResultLabel>Global Score</ResultLabel>
-            <ResultValue>{data.global_score}/100</ResultValue>
-          </ScoreItem>
-        )}
-
-      </ResultGrid>
-    </ResultsContainer>
+      <div className="details-drawer">
+        <div className="drawer-handle"></div>
+        <div className="drawer-content">
+          <h3 className="drawer-title">Information Details</h3>
+          
+          <div className="parameters-list">
+            {hasParameters ? (
+              <>
+                {data.brand && (
+                  <div className="param-item">
+                    <span className="param-title">Brand</span>
+                    <span className="param-data">{data.brand}</span>
+                  </div>
+                )}
+                {data.size && (
+                  <div className="param-item">
+                    <span className="param-title">Size</span>
+                    <span className="param-data">{data.size}</span>
+                  </div>
+                )}
+                {data.material && (
+                  <div className="param-item">
+                    <span className="param-title">Material</span>
+                    <span className="param-data">{data.material}</span>
+                  </div>
+                )}
+                {data.country_of_origin && (
+                  <div className="param-item">
+                    <span className="param-title">Origin</span>
+                    <span className="param-data">{data.country_of_origin}</span>
+                  </div>
+                )}
+                {data.care_instructions && (
+                  <div className="param-item">
+                    <span className="param-title">Care</span>
+                    <span className="param-data">{data.care_instructions}</span>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="no-data-message">
+                No detailed information available for this item.
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
