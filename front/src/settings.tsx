@@ -63,7 +63,9 @@ const Settings: React.FC = () => {
     <div id="settings-page">
       <div className="settings-container">
         
-        <h2 className="settings-title">Scan Parameters</h2>
+        <h1 className="settings-title">Parameters</h1>
+        <hr></hr>
+        <h2 className="settings-subtitle">Results page</h2>
 
         <div className="setting-item">
           <span>Brand</span>

@@ -1,0 +1,29 @@
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+#back-button {
+  background-color: transparent;
+  border: none;
+  color: #41715e;
+  font-size: 20px;
+  cursor: pointer;
+
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#help-title {
+    position: relative;
+    color: #ff0000;
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 20px;
+    z-index: 1000;
+}

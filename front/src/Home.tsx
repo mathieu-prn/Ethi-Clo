@@ -46,11 +46,11 @@ function Home() {
     <>
       <header>
         <div className="top-buttons">
-          <button id="settings" onClick={() => navigate("/settings")}>
-            <img src={settingsIcon} className="settings-icon" alt="settings" />
-          </button>
           <button id="help" onClick={() => navigate("/help")}>
             <img src={questionIcon} className="question-icon" alt="help" />
+          </button>
+          <button id="settings" onClick={() => navigate("/settings")}>
+            <img src={settingsIcon} className="settings-icon" alt="settings" />
           </button>
         </div>
 
@@ -107,9 +107,9 @@ function Home() {
           </div>
         </div>
 
-        {/* HISTORY */}
-        <div className="history">
-          <h2>─────── History ───────</h2>
+        {/* ABOUT US */}
+        <div className="about-us">
+          <h2>─────── About Us ───────</h2>
         </div>
 
         <div className={`scroll-block ${dykOpen ? "scroll-block--shrunk" : ""}`}>

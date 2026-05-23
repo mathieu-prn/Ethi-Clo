@@ -4,6 +4,7 @@ import Home from './Home.tsx'
 import Scan from './Scan.tsx'
 import LabelResultsPage from './LabelResultsPage.tsx'
 import Settings from './settings.tsx';
+import Help from './Help.tsx';
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/scan" element={<Scan />} />
         <Route path="/results" element={<LabelResultsPage />} />
-          <Route path="/settings" element={<Settings />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/help" element={<Help />} />
     </Routes>
     </>
   )
