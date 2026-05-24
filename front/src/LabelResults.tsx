@@ -14,6 +14,11 @@ interface LabelInfo {
 
 interface LabelResultsProps {
   data: LabelInfo;
+  drawerHeight: number;
+  isSnapping: boolean;
+  onDragStart: (e: React.TouchEvent | React.MouseEvent) => void;
+  onDragMove: (e: React.TouchEvent | React.MouseEvent) => void;
+  onDragEnd: (e: React.TouchEvent | React.MouseEvent) => void;
 }
 
 const ScoreBar = ({ score, label }: { score: number; label: string }) => {
@@ -33,7 +38,7 @@ const ScoreBar = ({ score, label }: { score: number; label: string }) => {
     <div className="score-card">
       <div className="score-header">
         <span className="score-label">{label}</span>
-        <span className="score-value" style={{ color: color }}>{score}%</span>
+        <span className="score-value" style={{ color }}>{score}%</span>
       </div>
       <div className="progress-container">
         <div
@@ -45,10 +50,9 @@ const ScoreBar = ({ score, label }: { score: number; label: string }) => {
   );
 };
 
-const LabelResults = ({ data }: LabelResultsProps) => {
+const LabelResults = ({ data, drawerHeight, isSnapping, onDragStart, onDragMove, onDragEnd }: LabelResultsProps) => {
   const showDualScores = data.ethical_score != null || data.environmental_score != null;
   const showGlobalScore = data.global_score != null && !showDualScores;
-  
   const hasScores = showDualScores || data.global_score != null;
   const hasParameters = data.brand || data.size || data.material || data.country_of_origin || data.care_instructions;
 
@@ -79,18 +83,29 @@ const LabelResults = ({ data }: LabelResultsProps) => {
               )}
             </>
           ) : (
-            <div className="no-data-message">
-              No score available for this item.
-            </div>
+            <div className="no-data-message">No score available for this item.</div>
           )}
         </div>
       </div>
 
-      <div className="details-drawer">
-        <div className="drawer-handle"></div>
+      <div
+        className={`details-drawer ${isSnapping ? "snapping" : ""}`}
+        style={{ height: `${drawerHeight}vh` }}
+      >
+        <div
+          className="drawer-handle-area"
+          onTouchStart={onDragStart}
+          onTouchMove={onDragMove}
+          onTouchEnd={onDragEnd}
+          onMouseDown={onDragStart}
+          onMouseMove={onDragMove}
+          onMouseUp={onDragEnd}
+        >
+          <div className="drawer-handle" />
+        </div>
+
         <div className="drawer-content">
           <h3 className="drawer-title">Information Details</h3>
-          
           <div className="parameters-list">
             {hasParameters ? (
               <>
@@ -126,9 +141,7 @@ const LabelResults = ({ data }: LabelResultsProps) => {
                 )}
               </>
             ) : (
-              <div className="no-data-message">
-                No detailed information available for this item.
-              </div>
+              <div className="no-data-message">No detailed information available for this item.</div>
             )}
           </div>
         </div>

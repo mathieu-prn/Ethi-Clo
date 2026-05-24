@@ -63,7 +63,7 @@ html, body {
 }
 
 .card {
-  margin-top: 14vh;
+  margin-top: 20vh;
   width: 85vw;
   height: 50vh;
   position: relative;
@@ -76,8 +76,8 @@ html, body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 70%;
-  height: 70%;
+  width: 80%;
+  height: 80%;
   z-index: 2;
   pointer-events: none;
 }
@@ -107,8 +107,9 @@ html, body {
 .scan-subtitle {
   color: rgba(0, 0, 0, 0.6);
   font-size: 12px;
-  margin-top: -5%;
+  margin-top: 12px; /* was -5%, causing it to overlap the card */
   text-align: center;
+  padding: 0 20px;
 }
 
 .scan-btn {
@@ -155,19 +156,18 @@ html, body {
 }
 
 .loading-overlay {
-  width: 83%;
-  height: 84%;
-  margin: auto;
   position: absolute;
   inset: 0;
-  border-radius: 12px;
+  width: 100%; /* covers the full card */
+  height: 100%;
+  margin: 0;
+  clip-path: inset(0 round 20px); /* clips to card corners */
   background: rgba(0, 0, 0, 0.75);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 100;
-  overflow: hidden;
 }
 
 .loading-spinner {

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import questionIcon from "./assets/question-icon.png"
 import settingsIcon from "./assets/settings-icon.png"
+import vekoImg from "./assets/veko.png"
 import { useNavigate } from "react-router-dom"
 import dykData from "./didYouKnow.json"
 import "./styles/Home.css"
@@ -23,6 +24,15 @@ function highlightFact(fact: DykFact) {
   )
 }
 
+const teamMembers = [
+  { name: "Paola GUILLERMAIN", description: "Full-stack developer passionate about sustainable tech and clean code." },
+  { name: "Valentin CABANNES", description: "UI/UX designer focused on creating intuitive and accessible interfaces." },
+  { name: "Mathieu PRINCE", description: "Data scientist specialized in ethical AI and environmental impact scoring." },
+  { name: "Florian RIBRIOUX", description: "Backend engineer with expertise in API design and cloud infrastructure." },
+  { name: "Ethan SAUVANET", description: "Product manager bridging the gap between users and technical teams." },
+  { name: "Stéphanie TANG", description: "DevOps engineer ensuring smooth deployments and system reliability." },
+]
+
 function Home() {
     const navigate = useNavigate();
     const [dykOpen, setDykOpen] = useState(false)
@@ -31,16 +41,6 @@ function Home() {
       const random = dykData[Math.floor(Math.random() * dykData.length)] as DykFact
       setFact(random)
     }, [])
-
-    // Needs to be replaced with real data
-    const historyItems = [
-      // format example : { name: "Nike T-Shirt", composition: "65% cotton · 35% polyester", score: 5 },
-      { label: "Clothes" },
-      { label: "Clothes" },
-      { label: "Clothes" },
-      { label: "Clothes" },
-      { label: "Clothes" },
-    ]
 
   return (
     <>
@@ -58,15 +58,10 @@ function Home() {
           <div className="title-line">
             <h1 id="banner-title">Ethi'Cl</h1>
             <div className="smiley">
-              <svg viewBox="0 0 100 100" className="smiley-svg"> //minX minY width height
-                  {/* Green circle */}
+              <svg viewBox="0 0 100 100" className="smiley-svg">
                   <circle cx="50" cy="50" r="45" className="face" />
-
-                  {/* Eyes */}
                   <circle cx="22" cy="40" r="6" className="eye" />
                   <circle cx="78" cy="40" r="6" className="eye" />
-
-                  {/* Smile */}
                   <path d="M30 50 Q50 60 70 50" className="mouth" />
               </svg>
             </div>
@@ -75,7 +70,7 @@ function Home() {
         </section>
       </header>
 
-      <body>
+      <div className="home-body">
         <div className="scan-container">
           <button className="scan-button" onClick={() => navigate("/scan")}>Scan</button>
         </div>
@@ -112,15 +107,20 @@ function Home() {
           <h2>─────── About Us ───────</h2>
         </div>
 
-        <div className={`scroll-block ${dykOpen ? "scroll-block--shrunk" : ""}`}>
-          {historyItems.map((item, i) => (
-            <div key={i} className="item">
-              <label>{item.label}</label>
-              <input type="text" />
+        <div className="carousel-wrapper">
+          <div className={`carousel-wrapper ${dykOpen ? "carousel--shrunk" : ""}`}>
+            <div className="carousel-track">
+              {teamMembers.map((member, i) => (
+                <div key={i} className="carousel-slide">
+                  <span className="member-name">{member.name}</span>
+                  <p className="member-description">{member.description}</p>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          <img src={vekoImg} alt="veko" className="veko-image" />
         </div>
-      </body>
+      </div>
     </>
   )
 }

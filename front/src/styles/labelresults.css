@@ -13,7 +13,7 @@
   width: 100vw;
   background-color: #F1EFE0;
   font-family: 'Inter', sans-serif;
-  overflow: hidden; /* Empêche le scroll de toute la page pour le bottom sheet */
+  overflow: hidden;
 }
 
 .back-button-results {
@@ -33,15 +33,13 @@
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* Force la couleur et la taille de l'icône de retour pour qu'elle soit visible */
 .back-icon, .back-button-results svg {
   fill: #5A8C89 !important;
   color: #5A8C89 !important;
-  width: 28px; 
-  height: 28px; 
+  width: 28px;
+  height: 28px;
 }
 
-/* --- STRUCTURE PRINCIPALE --- */
 .results-wrapper {
   display: flex;
   flex-direction: column;
@@ -56,7 +54,6 @@
   flex-shrink: 0;
 }
 
-/* --- ESPACE IMAGE --- */
 .image-placeholder {
   width: 100%;
   max-width: 350px;
@@ -80,11 +77,10 @@
   object-fit: cover;
 }
 
-/* --- SECTION SCORES --- */
 .scores-overlay {
   width: 95%;
   max-width: 380px;
-  margin-top: -15px; /* Décalage pour superposer légèrement sur l'image */
+  margin-top: 15px;
   z-index: 10;
 }
 
@@ -143,13 +139,11 @@
   transition: width 1.5s ease-in-out, background-color 1.5s;
 }
 
-/* --- BOTTOM SHEET (MENU COULISSANT) --- */
 .details-drawer {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 55%; /* Hauteur de base du tiroir */
   background: white;
   border-top-left-radius: 35px;
   border-top-right-radius: 35px;
@@ -157,7 +151,19 @@
   display: flex;
   flex-direction: column;
   z-index: 100;
-  transition: height 0.3s ease;
+  transition: none;
+}
+
+.details-drawer.snapping {
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.drawer-handle-area {
+  padding: 10px 0;
+  cursor: grab;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .drawer-handle {
@@ -165,13 +171,12 @@
   height: 5px;
   background: #AACABB;
   border-radius: 10px;
-  margin: 15px auto;
   flex-shrink: 0;
 }
 
 .drawer-content {
   flex-grow: 1;
-  overflow-y: auto; /* Permet de scroller le contenu si la liste est longue */
+  overflow-y: auto;
   padding: 0 25px 40px;
 }
 
@@ -212,7 +217,6 @@
   font-weight: 500;
 }
 
-/* --- MESSAGES D'ÉTAT VIDE --- */
 .no-data-message {
   background: rgba(255, 255, 255, 0.95);
   padding: 16px;

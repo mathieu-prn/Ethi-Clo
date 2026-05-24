@@ -6,24 +6,121 @@
   overflow-x: hidden;
 }
 
+.help-page {
+  min-height: 100vh;
+  width: 100vw;
+  background: linear-gradient(
+    to bottom,
+    #5A8C89 0%,
+    #73B697 30%,
+    #AACABB 60%,
+    #F1F7ED 100%
+  );
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.help-header {
+  background: #F1F7ED;
+  width: 100%;
+  padding: 20px 16px;
+  border-bottom-left-radius: 35%;
+  border-bottom-right-radius: 35%;
+  border-bottom: 4px solid #5A8C89;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
 #back-button {
   background-color: transparent;
   border: none;
-  color: #41715e;
+  color: #5A8C89;
   font-size: 20px;
   cursor: pointer;
-
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  left: 1px;
+  top: 15%;
   display: flex;
-  flex-direction: column;
+  align-items: center;
 }
 
-#help-title {
-    position: relative;
-    color: #ff0000;
-    font-size: 28px;
-    font-weight: bold;
-    margin-top: 20px;
-    z-index: 1000;
+.help-title {
+  font-family: 'Bebas Neue', sans-serif;
+  color: #5A8C89;
+  font-size: 2rem;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  text-shadow: #b6b4a4 2px 2px 0;
+  margin: 0;
+}
+
+.help-body {
+  padding: 24px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.help-section {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  padding: 18px 16px;
+  text-align: left;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.help-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #41715e;
+  margin: 0 0 10px;
+}
+
+.help-section-text {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.help-divider {
+  height: 10px;
+}
+
+.help-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.help-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.step-number {
+  background: #5A8C89;
+  color: white;
+  font-weight: 700;
+  font-size: 13px;
+  min-width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.help-step p {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.5;
+  margin: 0;
 }

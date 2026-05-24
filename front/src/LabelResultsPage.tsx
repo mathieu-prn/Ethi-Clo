@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import LabelResults from "./LabelResults";
 import "./styles/labelresults.css";
 
@@ -20,14 +20,17 @@ function LabelResultsPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [filteredInfo, setFilteredInfo] = useState<LabelInfo | null>(null);
+  const [drawerHeight, setDrawerHeight] = useState(55);
+  const [isSnapping, setIsSnapping] = useState(false);
+  const dragStartY = useRef<number | null>(null);
+  const dragStartHeight = useRef<number>(55);
 
   useEffect(() => {
     const state = location.state as { labelInfo?: LabelInfo } | null;
     const originalLabelInfo = state?.labelInfo ? { ...state.labelInfo } : null;
 
-    // --- INITIALISATION DE L'IMAGE D'EXEMPLE ---
     if (originalLabelInfo) {
-       // originalLabelInfo.imageUrl = "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=500&auto=format&fit=crop"; 
+      // originalLabelInfo.imageUrl = "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=500&auto=format&fit=crop";
     }
 
     if (originalLabelInfo) {
@@ -57,6 +60,31 @@ function LabelResultsPage() {
     }
   }, [location.state]);
 
+  const onDragStart = (e: React.TouchEvent | React.MouseEvent) => {
+    const y = "touches" in e ? e.touches[0].clientY : e.clientY;
+    dragStartY.current = y;
+    dragStartHeight.current = drawerHeight;
+    setIsSnapping(false);
+  };
+
+  const onDragMove = (e: React.TouchEvent | React.MouseEvent) => {
+    if (dragStartY.current === null) return;
+    const y = "touches" in e ? e.touches[0].clientY : e.clientY;
+    const diff = dragStartY.current - y;
+    const viewportHeight = window.innerHeight;
+    const newHeight = dragStartHeight.current + (diff / viewportHeight) * 100;
+    setDrawerHeight(Math.min(92, Math.max(20, newHeight)));
+  };
+
+  const onDragEnd = () => {
+    if (dragStartY.current === null) return;
+    const snapUp = drawerHeight > 73;
+    setIsSnapping(true);
+    setDrawerHeight(snapUp ? 92 : 55);
+    setTimeout(() => setIsSnapping(false), 300);
+    dragStartY.current = null;
+  };
+
   return (
     <div className="app-results">
       <button className="back-button-results" onClick={() => navigate("/scan")}>
@@ -64,12 +92,19 @@ function LabelResultsPage() {
       </button>
 
       {filteredInfo ? (
-        <LabelResults data={filteredInfo} />
+        <LabelResults
+          data={filteredInfo}
+          drawerHeight={drawerHeight}
+          isSnapping={isSnapping}
+          onDragStart={onDragStart}
+          onDragMove={onDragMove}
+          onDragEnd={onDragEnd}
+        />
       ) : (
         <div className="empty-state">
           <p>No results found.</p>
           <button className="back-to-scan-btn" onClick={() => navigate("/scan")}>
-            <FaArrowLeft className="back-icon" style={{marginRight: '8px'}} /> Return
+            <FaArrowLeft className="back-icon" style={{ marginRight: "8px" }} /> Return
           </button>
         </div>
       )}
