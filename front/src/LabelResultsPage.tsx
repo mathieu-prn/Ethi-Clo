@@ -2,60 +2,47 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { useEffect, useState, useRef } from "react";
 import LabelResults from "./LabelResults";
+import { calculateLabelScores, type ScoredLabelInfo } from "./scoreCalculator";
 import "./styles/labelresults.css";
-
-interface LabelInfo {
-  brand?: string | null;
-  size?: string | null;
-  material?: string | null;
-  care_instructions?: string | null;
-  country_of_origin?: string | null;
-  ethical_score?: number | null;
-  environmental_score?: number | null;
-  global_score?: number | null;
-  imageUrl?: string | null;
-}
 
 function LabelResultsPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [filteredInfo, setFilteredInfo] = useState<LabelInfo | null>(null);
-  const [drawerHeight, setDrawerHeight] = useState(55);
+  const [filteredInfo, setFilteredInfo] = useState<ScoredLabelInfo | null>(null);
+  const [drawerHeight, setDrawerHeight] = useState(50);
   const [isSnapping, setIsSnapping] = useState(false);
   const dragStartY = useRef<number | null>(null);
   const dragStartHeight = useRef<number>(55);
 
   useEffect(() => {
-    const state = location.state as { labelInfo?: LabelInfo } | null;
+    const state = location.state as { labelInfo?: ScoredLabelInfo } | null;
     const originalLabelInfo = state?.labelInfo ? { ...state.labelInfo } : null;
 
     if (originalLabelInfo) {
-      // originalLabelInfo.imageUrl = "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=500&auto=format&fit=crop";
-    }
-
-    if (originalLabelInfo) {
+      const labelInfoWithScores = calculateLabelScores(originalLabelInfo);
       const savedSettings = localStorage.getItem("ethiCloSettings");
+
       if (savedSettings) {
         const settings = JSON.parse(savedSettings);
-        const newInfo: LabelInfo = {};
+        const newInfo: ScoredLabelInfo = {};
 
-        if (originalLabelInfo.imageUrl) newInfo.imageUrl = originalLabelInfo.imageUrl;
-        if (settings.brand) newInfo.brand = originalLabelInfo.brand;
-        if (settings.size) newInfo.size = originalLabelInfo.size;
-        if (settings.material) newInfo.material = originalLabelInfo.material;
-        if (settings.care) newInfo.care_instructions = originalLabelInfo.care_instructions;
-        if (settings.country) newInfo.country_of_origin = originalLabelInfo.country_of_origin;
+        if (labelInfoWithScores.imageUrl) newInfo.imageUrl = labelInfoWithScores.imageUrl;
+        if (settings.brand) newInfo.brand = labelInfoWithScores.brand;
+        if (settings.size) newInfo.size = labelInfoWithScores.size;
+        if (settings.material) newInfo.material = labelInfoWithScores.material;
+        if (settings.care) newInfo.care_instructions = labelInfoWithScores.care_instructions;
+        if (settings.country) newInfo.country_of_origin = labelInfoWithScores.country_of_origin;
 
         if (settings.detailedScore) {
-          if (originalLabelInfo.ethical_score != null) newInfo.ethical_score = originalLabelInfo.ethical_score;
-          if (originalLabelInfo.environmental_score != null) newInfo.environmental_score = originalLabelInfo.environmental_score;
+          if (labelInfoWithScores.ethical_score != null) newInfo.ethical_score = labelInfoWithScores.ethical_score;
+          if (labelInfoWithScores.environmental_score != null) newInfo.environmental_score = labelInfoWithScores.environmental_score;
         }
-        if (settings.globalScore && originalLabelInfo.global_score != null) {
-          newInfo.global_score = originalLabelInfo.global_score;
+        if (settings.globalScore && labelInfoWithScores.global_score != null) {
+          newInfo.global_score = labelInfoWithScores.global_score;
         }
         setFilteredInfo(newInfo);
       } else {
-        setFilteredInfo(originalLabelInfo);
+        setFilteredInfo(labelInfoWithScores);
       }
     }
   }, [location.state]);
@@ -77,18 +64,29 @@ function LabelResultsPage() {
   };
 
   const onDragEnd = () => {
-    if (dragStartY.current === null) return;
-    const snapUp = drawerHeight > 73;
+  if (dragStartY.current === null) return;
+  
+  const movedEnough = Math.abs(drawerHeight - dragStartHeight.current) > 5;
+  
+  if (movedEnough) {
+    const snapUp = drawerHeight > 68;
     setIsSnapping(true);
-    setDrawerHeight(snapUp ? 92 : 55);
+    setDrawerHeight(snapUp ? 92 : 50);
     setTimeout(() => setIsSnapping(false), 300);
-    dragStartY.current = null;
+  } else {
+    // Pas assez de mouvement, on remet à la position de départ
+    setIsSnapping(true);
+    setDrawerHeight(dragStartHeight.current);
+    setTimeout(() => setIsSnapping(false), 300);
+  }
+  
+  dragStartY.current = null;
   };
 
   return (
     <div className="app-results">
       <button className="back-button-results" onClick={() => navigate("/scan")}>
-        <FaArrowLeft className="back-icon" />
+        <FaArrowLeft />
       </button>
 
       {filteredInfo ? (

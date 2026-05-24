@@ -9,17 +9,15 @@ interface EthiCloSettings {
   care: boolean;
   country: boolean;
   detailedScore: boolean;
-  globalScore: boolean;
 }
 
 const defaultSettings: EthiCloSettings = {
-  brand: false,
-  size: false,
-  material: false,
-  care: false,
-  country: false,
-  detailedScore: false,
-  globalScore: true,
+  brand: true,
+  size: true,
+  material: true,
+  care: true,
+  country: true,
+  detailedScore: true,
 };
 
 const Settings: React.FC = () => {
@@ -41,19 +39,12 @@ const Settings: React.FC = () => {
     }));
   };
 
-    const handleDetailedToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleDetailedToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
     setSettings((prev) => ({
       ...prev,
       detailedScore: isChecked,
-    }));
-  };
-
-  const handleGlobalToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isChecked = e.target.checked;
-    setSettings((prev) => ({
-      ...prev,
-      globalScore: isChecked,
+      globalScore: !isChecked,
     }));
   };
 
@@ -61,9 +52,7 @@ const Settings: React.FC = () => {
     <div id="settings-page">
       <div className="settings-container">
         
-        <h1 className="settings-title">Parameters</h1>
-        <hr></hr>
-        <h2 className="settings-subtitle">Results page</h2>
+        <h2 className="settings-title">Scan Parameters</h2>
 
         <div className="setting-item">
           <span>Brand</span>
@@ -131,19 +120,7 @@ const Settings: React.FC = () => {
             <input
               type="checkbox"
               checked={settings.detailedScore}
-              onChange={() => handleToggle('detailedScore')}
-            />
-            <span className="slider"></span>
-          </label>
-        </div>
-
-        <div className="setting-item">
-          <span>Global Score</span>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={settings.globalScore}
-              onChange={() => handleToggle('globalScore')}
+              onChange={handleDetailedToggle}
             />
             <span className="slider"></span>
           </label>

@@ -25,7 +25,7 @@ function highlightFact(fact: DykFact) {
 }
 
 const teamMembers = [
-  { name: "Paola GUILLERMAIN", description: "Full-stack developer passionate about sustainable tech and clean code." },
+  { name: "Paola GUILLERMAIN", description: "Blbl." },
   { name: "Valentin CABANNES", description: "UI/UX designer focused on creating intuitive and accessible interfaces." },
   { name: "Mathieu PRINCE", description: "Data scientist specialized in ethical AI and environmental impact scoring." },
   { name: "Florian RIBRIOUX", description: "Backend engineer with expertise in API design and cloud infrastructure." },

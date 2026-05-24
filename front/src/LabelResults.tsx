@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from "react";
-
-interface LabelInfo {
-  brand?: string | null;
-  size?: string | null;
-  material?: string | null;
-  care_instructions?: string | null;
-  country_of_origin?: string | null;
-  ethical_score?: number | null;
-  environmental_score?: number | null;
-  global_score?: number | null;
-  imageUrl?: string | null;
-}
+import type { ScoredLabelInfo } from "./scoreCalculator";
+import vekoImg from "./assets/veko.png"
 
 interface LabelResultsProps {
-  data: LabelInfo;
+  data: ScoredLabelInfo;
   drawerHeight: number;
   isSnapping: boolean;
   onDragStart: (e: React.TouchEvent | React.MouseEvent) => void;
@@ -59,12 +49,13 @@ const LabelResults = ({ data, drawerHeight, isSnapping, onDragStart, onDragMove,
   return (
     <div className="results-wrapper">
       <div className="results-upper-section">
+
         <div className="image-placeholder">
-          {data.imageUrl ? (
-            <img src={data.imageUrl} alt="Item" className="item-image" />
-          ) : (
-            <span>IMAGE</span>
-          )}
+          <img
+            src={vekoImg}
+            alt="Veko"
+            className="veko-result-image"
+          />
         </div>
 
         <div className="scores-overlay">
