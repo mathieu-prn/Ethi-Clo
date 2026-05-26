@@ -163,7 +163,7 @@ const careEnvironmentalAdjustment = (careInstructions?: string | null) => {
   if (["cold", "30", "basse temperature", "basse température"].some((term) => text.includes(term))) {
     adjustment += 6;
   }
-  if (["cold", "60", "basse temperature", "basse température"].some((term) => text.includes(term))) {
+  if (["hot", "60", "haute temperature", "haute température"].some((term) => text.includes(term))) {
     adjustment -= 6;
   }
 
