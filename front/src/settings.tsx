@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './styles/settings.css';
 
 interface EthiCloSettings {
@@ -15,13 +15,14 @@ const defaultSettings: EthiCloSettings = {
   brand: true,
   size: true,
   material: true,
-  care: true,
+  care: false,
   country: true,
-  detailedScore: true,
+  detailedScore: false,
 };
 
 const Settings: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [settings, setSettings] = useState<EthiCloSettings>(() => {
     const saved = localStorage.getItem('ethiCloSettings');
@@ -44,8 +45,16 @@ const Settings: React.FC = () => {
     setSettings((prev) => ({
       ...prev,
       detailedScore: isChecked,
-      globalScore: !isChecked,
+      // Le score global n'est plus impacté ici, il reste affiché.
     }));
+  };
+
+  const handleSaveAndQuit = () => {
+    if (location.state?.from) {
+      navigate(location.state.from, { state: location.state });
+    } else {
+      navigate('/');
+    }
   };
 
   return (
@@ -127,7 +136,7 @@ const Settings: React.FC = () => {
         </div>
 
         <div className="settings-footer">
-          <button className="back-button-bottom" onClick={() => navigate('/')}>
+          <button className="back-button-bottom" onClick={handleSaveAndQuit}>
             Save & Quit
           </button>
         </div>

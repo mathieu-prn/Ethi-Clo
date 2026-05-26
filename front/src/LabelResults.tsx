@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import type { ScoredLabelInfo } from "./scoreCalculator";
-import vekoImg from "./assets/veko.png"
+import vekoImg from "./assets/veko.png";
 
 interface LabelResultsProps {
   data: ScoredLabelInfo;
@@ -9,6 +9,7 @@ interface LabelResultsProps {
   onDragStart: (e: React.TouchEvent | React.MouseEvent) => void;
   onDragMove: (e: React.TouchEvent | React.MouseEvent) => void;
   onDragEnd: (e: React.TouchEvent | React.MouseEvent) => void;
+  onUpperSectionRendered: (bottomPx: number) => void; // Nouvelle fonction pour envoyer la position
 }
 
 const ScoreBar = ({ score, label }: { score: number; label: string }) => {
@@ -40,15 +41,27 @@ const ScoreBar = ({ score, label }: { score: number; label: string }) => {
   );
 };
 
-const LabelResults = ({ data, drawerHeight, isSnapping, onDragStart, onDragMove, onDragEnd }: LabelResultsProps) => {
+const LabelResults = ({ data, drawerHeight, isSnapping, onDragStart, onDragMove, onDragEnd, onUpperSectionRendered }: LabelResultsProps) => {
   const showDualScores = data.ethical_score != null || data.environmental_score != null;
-  const showGlobalScore = data.global_score != null && !showDualScores;
-  const hasScores = showDualScores || data.global_score != null;
+  const showGlobalScore = data.global_score != null;
+  const hasScores = showDualScores || showGlobalScore;
   const hasParameters = data.brand || data.size || data.material || data.country_of_origin || data.care_instructions;
+
+  const upperRef = useRef<HTMLDivElement>(null);
+
+  // Calcule la distance du bloc de score par rapport au haut de l'écran après le rendu
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (upperRef.current) {
+        onUpperSectionRendered(upperRef.current.getBoundingClientRect().bottom);
+      }
+    }, 50); // Léger délai pour s'assurer que le DOM est à jour
+    return () => clearTimeout(timer);
+  }, [data, onUpperSectionRendered]);
 
   return (
     <div className="results-wrapper">
-      <div className="results-upper-section">
+      <div className="results-upper-section" ref={upperRef}>
 
         <div className="image-placeholder">
           <img
@@ -60,19 +73,19 @@ const LabelResults = ({ data, drawerHeight, isSnapping, onDragStart, onDragMove,
 
         <div className="scores-overlay">
           {hasScores ? (
-            <>
+            <div className="scores-stack">
+              {showGlobalScore && (
+                <div className="scores-grid-1">
+                  <ScoreBar score={data.global_score!} label="Global Score" />
+                </div>
+              )}
               {showDualScores && (
                 <div className="scores-grid-2">
                   {data.ethical_score != null && <ScoreBar score={data.ethical_score} label="Ethical" />}
                   {data.environmental_score != null && <ScoreBar score={data.environmental_score} label="Env." />}
                 </div>
               )}
-              {showGlobalScore && (
-                <div className="scores-grid-1">
-                  <ScoreBar score={data.global_score!} label="Global Score" />
-                </div>
-              )}
-            </>
+            </div>
           ) : (
             <div className="no-data-message">No score available for this item.</div>
           )}

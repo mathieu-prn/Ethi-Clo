@@ -48,6 +48,30 @@
   font-size: 18px;
 }
 
+.settings-button-results {
+  position: absolute;
+  top: 25px;
+  right: 20px;
+  background: #ffffff;
+  border: 2px solid #5A8C89;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 0;
+}
+
+.settings-icon-results {
+  width: 25px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
 .results-wrapper {
   display: flex;
   flex-direction: column;
@@ -55,7 +79,7 @@
 }
 
 .results-upper-section {
-  padding: 20px 20px 20px;
+  padding: 70px 20px 20px; /* Espace en haut ajusté pour les boutons */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -90,6 +114,12 @@
   max-width: 380px;
   margin-top: 15px;
   z-index: 10;
+}
+
+.scores-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .scores-grid-2 {
