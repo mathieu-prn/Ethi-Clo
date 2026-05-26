@@ -69,7 +69,7 @@ const countryEthicalScores: Record<string, number> = {
 };
 
 const countryTransportScores: Record<string, number> = {
-  france: 92,
+  france: 100,
   italie: 82,
   italy: 82,
   portugal: 80,
@@ -163,17 +163,8 @@ const careEnvironmentalAdjustment = (careInstructions?: string | null) => {
   if (["cold", "30", "basse temperature", "basse température"].some((term) => text.includes(term))) {
     adjustment += 6;
   }
-  if (["air dry", "line dry", "sechage a l'air", "séchage à l'air"].some((term) => text.includes(term))) {
-    adjustment += 5;
-  }
-  if (["tumble dry", "seche-linge", "sèche-linge"].some((term) => text.includes(term))) {
+  if (["cold", "60", "basse temperature", "basse température"].some((term) => text.includes(term))) {
     adjustment -= 6;
-  }
-  if (["dry clean", "nettoyage a sec", "nettoyage à sec"].some((term) => text.includes(term))) {
-    adjustment -= 8;
-  }
-  if (["do not bleach", "ne pas blanchir"].some((term) => text.includes(term))) {
-    adjustment += 2;
   }
 
   return adjustment;
@@ -189,8 +180,8 @@ export const calculateLabelScores = (labelInfo: ScoredLabelInfo): ScoredLabelInf
   const careBaseScore = labelInfo.care_instructions ? 50 : null;
 
   const environmentalParts = [
-    { score: materialScore, weight: 0.65 },
-    { score: transportScore, weight: 0.25 },
+    { score: materialScore, weight: 0.6 },
+    { score: transportScore, weight: 0.3 },
     { score: careBaseScore, weight: 0.1 },
   ].filter((part): part is { score: number; weight: number } => part.score !== null);
 
@@ -211,8 +202,8 @@ export const calculateLabelScores = (labelInfo: ScoredLabelInfo): ScoredLabelInf
   const brandEthicsScore = scoreFromLookup(labelInfo.brand, brandEthicalScores);
 
   const ethicalParts = [
-    { score: countryEthicsScore, weight: 0.6 },
-    { score: brandEthicsScore, weight: 0.4 },
+    { score: countryEthicsScore, weight: 0.4 },
+    { score: brandEthicsScore, weight: 0.6 },
   ].filter((part): part is { score: number; weight: number } => part.score !== null);
 
   const ethicalScore =
