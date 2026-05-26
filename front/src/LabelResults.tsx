@@ -9,6 +9,9 @@ const ResultsContainer = styled.div`
   padding: 24px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
+  max-height: 70vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
 `;
 
 const ResultTitle = styled.h2`
@@ -22,7 +25,6 @@ const ResultGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  
   @media (max-width: 500px) {
     grid-template-columns: 1fr;
   }

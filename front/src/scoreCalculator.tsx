@@ -106,6 +106,7 @@ const brandEthicalScores: Record<string, number> = {
   zara: 34,
   primark: 24,
   shein: 12,
+  timberland: 60,
 };
 
 const normalizeText = (value?: string | null) => (value ?? "").trim().toLowerCase();
@@ -207,7 +208,7 @@ export const calculateLabelScores = (labelInfo: ScoredLabelInfo): ScoredLabelInf
     countryEthicalScores,
     labelInfo.country_of_origin ? 50 : null,
   );
-  const brandEthicsScore = scoreFromLookup(labelInfo.brand, brandEthicalScores);
+  const brandEthicsScore = scoreFromLookup(labelInfo.brand?.toLowerCase(), brandEthicalScores);
 
   const ethicalParts = [
     { score: countryEthicsScore, weight: 0.6 },
