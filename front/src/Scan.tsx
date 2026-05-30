@@ -38,6 +38,7 @@ function Dashboard() {
       }
 
       const data: LabelInfo = JSON.parse(text);
+      console.log("Received label info:", data);
       navigate("/results", { state: { labelInfo: data } });
     } catch (error) {
       console.error("Error sending scan request:", error);
