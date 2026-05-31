@@ -20,6 +20,78 @@ def scan_label():
     try:
         data = request.json
         image_data_url = data.get('imageDataUrl')
+        prompt = """
+        You are an OCR extraction system for clothing labels.
+
+You will be given an image of a clothing label.
+
+If the image does not contain a recognizable clothing label, respond with exactly:
+
+{"brand":null,"size":null,"material":null,"care_instructions":null,"country_of_origin":null}
+
+Otherwise, extract ONLY these fields:
+
+- brand
+- size
+- material
+- care_instructions
+- country_of_origin
+
+Rules:
+
+- Respond with valid JSON only.
+- Do not use markdown.
+- Do not use code fences.
+- Do not add explanations or extra text.
+- Do not use arrays, objects, or nested structures.
+- Every value must be either a string or null.
+- Preserve material qualifiers such as "organic", "recycled", "recycled polyester", "organic cotton", "linen", "hemp", etc.
+- Preserve percentages when present.
+- For material, return a single string formatted as:
+  "percentage% material, percentage% material, ..."
+- Use commas to separate materials.
+- If percentages are not visible, return the material names separated by commas.
+- Return country names exactly as written on the label.
+- Return care instructions as a single readable string.
+- Use null for any missing field.
+
+Example 1:
+
+Input label:
+PATAGONIA
+Made in Vietnam
+80% Organic Cotton
+20% Recycled Polyester
+Machine wash cold
+
+Output:
+{"brand":"Patagonia","size":null,"material":"80% organic cotton, 20% recycled polyester","care_instructions":"machine wash cold","country_of_origin":"Vietnam"}
+
+Example 2:
+
+Input label:
+ZARA
+M
+100% Cotton
+Made in Turkey
+
+Output:
+{"brand":"Zara","size":"M","material":"100% cotton","care_instructions":null,"country_of_origin":"Turkey"}
+
+Example 3:
+
+Input label:
+45% Recycled Cotton
+35% Cotton
+20% Polyester
+
+Output:
+{"brand":null,"size":null,"material":"45% recycled cotton, 35% cotton, 20% polyester","care_instructions":null,"country_of_origin":null}
+
+Return JSON only.
+
+Here is the image:
+"""
         
         if not image_data_url:
             return jsonify({'error': 'No image provided'}), 400
@@ -42,7 +114,7 @@ def scan_label():
                     data=image_bytes,
                     mime_type='image/jpeg',
                 ),
-                "You will be given an image of a clothing label. If you do not recognize a clothing label, respond with exactly: {\"brand\": null, \"size\": null, \"material\": null, \"care_instructions\": null, \"country_of_origin\": null}. Otherwise, extract only the following fields if available: brand, size, material, care_instructions, and country_of_origin. Respond with valid JSON only. Do not add any markdown, explanation, or extra text. Use null for missing values. Your response must be parsable by `json.loads` without modification. Here is the image:" 
+                prompt
             ]
         )
         

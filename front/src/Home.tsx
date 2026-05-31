@@ -1,7 +1,12 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import questionIcon from "./assets/question-icon.png"
 import settingsIcon from "./assets/settings-icon.png"
-import vekoImg from "./assets/veko.png"
+import vekoPaola from "./assets/veko-paola.png"
+import vekoValentin from "./assets/veko-valentin.png"
+import vekoMathieu from "./assets/veko-mathieu.png"
+import vekoFlorian from "./assets/veko-flo.png"
+import vekoEthan from "./assets/veko-ethan.png"
+import vekoStephanie from "./assets/veko-steph.png"
 import { useNavigate } from "react-router-dom"
 import dykData from "./didYouKnow.json"
 import "./styles/Home.css"
@@ -25,22 +30,63 @@ function highlightFact(fact: DykFact) {
 }
 
 const teamMembers = [
-  { name: "Paola GUILLERMAIN", description: "Blbl." },
-  { name: "Valentin CABANNES", description: "UI/UX designer focused on creating intuitive and accessible interfaces." },
-  { name: "Mathieu PRINCE", description: "Data scientist specialized in ethical AI and environmental impact scoring." },
-  { name: "Florian RIBRIOUX", description: "Backend engineer with expertise in API design and cloud infrastructure." },
-  { name: "Ethan SAUVANET", description: "Product manager bridging the gap between users and technical teams." },
-  { name: "Stéphanie TANG", description: "DevOps engineer ensuring smooth deployments and system reliability." },
+  { name: "Paola GUILLERMAIN", description: "Back-End - OCR processing & score calculations.", img: vekoPaola },
+  { name: "Valentin CABANNES", description: "Back-End - OCR processing & score calculations.", img: vekoValentin },
+  { name: "Mathieu PRINCE", description: "Camera stream, Gemini API integration & Scan page core features.", img: vekoMathieu },
+  { name: "Florian RIBRIOUX", description: "Camera access, scan capture & image processing.", img: vekoFlorian },
+  { name: "Ethan SAUVANET", description: "Front-End - UX implementation & UI development.", img: vekoEthan },
+  { name: "Stéphanie TANG", description: "Front-End - Design, UX and assets implementation & UI development.", img: vekoStephanie },
 ]
 
 function Home() {
-    const navigate = useNavigate();
-    const [dykOpen, setDykOpen] = useState(false)
-    const [fact, setFact] = useState<DykFact | null>(null)
-    useEffect(() => {
-      const random = dykData[Math.floor(Math.random() * dykData.length)] as DykFact
-      setFact(random)
-    }, [])
+  const navigate = useNavigate()
+  const [dykOpen, setDykOpen] = useState(false)
+  const [fact, setFact] = useState<DykFact | null>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [displayedImg, setDisplayedImg] = useState<string>(teamMembers[0].img)
+  const [fading, setFading] = useState(false)
+
+  useEffect(() => {
+    const random = dykData[Math.floor(Math.random() * dykData.length)] as DykFact
+    setFact(random)
+  }, [])
+
+  useEffect(() => {
+    setDisplayedImg(teamMembers[0].img)
+  }, [])
+
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track) return
+
+    const handleScroll = () => {
+      const slides = track.querySelectorAll<HTMLElement>(".carousel-slide")
+      if (!slides.length) return
+      let closest = 0
+      let minDiff = Infinity
+      slides.forEach((slide, i) => {
+        const diff = Math.abs(slide.offsetLeft - track.scrollLeft)
+        if (diff < minDiff) {
+          minDiff = diff
+          closest = i
+        }
+      })
+      setActiveIndex(closest)
+    }
+
+    track.addEventListener("scroll", handleScroll, { passive: true })
+    return () => track.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  useEffect(() => {
+    setFading(true)
+    const timeout = setTimeout(() => {
+      setDisplayedImg(teamMembers[activeIndex].img)
+      setFading(false)
+    }, 180)
+    return () => clearTimeout(timeout)
+  }, [activeIndex])
 
   return (
     <>
@@ -59,10 +105,10 @@ function Home() {
             <h1 id="banner-title">Ethi'Cl</h1>
             <div className="smiley">
               <svg viewBox="0 0 100 100" className="smiley-svg">
-                  <circle cx="50" cy="50" r="45" className="face" />
-                  <circle cx="22" cy="40" r="6" className="eye" />
-                  <circle cx="78" cy="40" r="6" className="eye" />
-                  <path d="M30 50 Q50 60 70 50" className="mouth" />
+                <circle cx="50" cy="50" r="45" className="face" />
+                <circle cx="22" cy="40" r="6" className="eye" />
+                <circle cx="78" cy="40" r="6" className="eye" />
+                <path d="M30 50 Q50 60 70 50" className="mouth" />
               </svg>
             </div>
           </div>
@@ -75,7 +121,6 @@ function Home() {
           <button className="scan-button" onClick={() => navigate("/scan")}>Scan</button>
         </div>
 
-        {/* DID YOU KNOW */}
         <div className="dyk-accordion">
           <button
             className="dyk-header"
@@ -102,23 +147,27 @@ function Home() {
           </div>
         </div>
 
-        {/* ABOUT US */}
         <div className="about-us">
           <h2>─────── About Us ───────</h2>
         </div>
 
         <div className="carousel-wrapper">
-          <div className={`carousel-wrapper ${dykOpen ? "carousel--shrunk" : ""}`}>
-            <div className="carousel-track">
+          <div className={`carousel-inner ${dykOpen ? "carousel--shrunk" : ""}`}>
+            <div className="carousel-track" ref={trackRef}>
               {teamMembers.map((member, i) => (
                 <div key={i} className="carousel-slide">
                   <span className="member-name">{member.name}</span>
+                  <hr></hr>
                   <p className="member-description">{member.description}</p>
                 </div>
               ))}
             </div>
           </div>
-          <img src={vekoImg} alt="veko" className="veko-image" />
+          <img
+            src={displayedImg}
+            alt="veko"
+            className={`veko-image${fading ? " veko-fade" : ""}`}
+          />
         </div>
       </div>
     </>

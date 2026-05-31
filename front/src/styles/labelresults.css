@@ -79,7 +79,7 @@
 }
 
 .results-upper-section {
-  padding: 70px 20px 20px; /* Espace en haut ajusté pour les boutons */
+  padding: 20px 20px 10px; /* Espace en haut ajusté pour les boutons */
   display: flex;
   flex-direction: column;
   align-items: center;

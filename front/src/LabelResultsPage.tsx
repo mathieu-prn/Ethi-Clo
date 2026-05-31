@@ -55,7 +55,7 @@ function LabelResultsPage() {
 
   // Calcule la hauteur parfaite pour le menu déroulant !
   const handleUpperSectionRendered = useCallback((bottomPx: number) => {
-    const fixedDistancePx = 5; // Le menu démarre toujours 10px sous les scores
+    const fixedDistancePx = -4; // Le menu démarre toujours 10px sous les scores
     const drawerStartPx = bottomPx + fixedDistancePx;
     const remainingPx = window.innerHeight - drawerStartPx;
     const remainingVh = (remainingPx / window.innerHeight) * 100;
@@ -79,7 +79,7 @@ function LabelResultsPage() {
     const diff = dragStartY.current - y;
     const viewportHeight = window.innerHeight;
     const newHeight = dragStartHeight.current + (diff / viewportHeight) * 100;
-    setDrawerHeight(Math.min(92, Math.max(20, newHeight)));
+    setDrawerHeight(Math.min(85, Math.max(20, newHeight)));
   };
 
   const onDragEnd = () => {
@@ -91,7 +91,7 @@ function LabelResultsPage() {
       // Retourne au point de base calculé dynamiquement
       const snapUp = drawerHeight > baseDrawerHeight + 10;
       setIsSnapping(true);
-      setDrawerHeight(snapUp ? 92 : baseDrawerHeight);
+      setDrawerHeight(snapUp ? 85 : baseDrawerHeight);
       setTimeout(() => setIsSnapping(false), 300);
     } else {
       setIsSnapping(true);

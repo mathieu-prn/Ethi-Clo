@@ -327,15 +327,20 @@ body {
   color: #41715e;
 }
 
+hr {
+  border: none;
+  border-top: 2px solid #41715e;
+  margin: 30px 0 20px 0;
+}
+
 .member-description {
   position: absolute;
-  top: 45px;
-  left: 120px;
+  top: 60px;
+  left: 110px;
   right: 20px;
-  bottom: 14px;
-  font-size: 12px;
+  font-size: 15px;
   color: #333;
-  line-height: 1.5;
+  line-height: 1.4;
   margin: 0;
 }
 
@@ -348,4 +353,9 @@ body {
   object-position: bottom left;
   pointer-events: none;
   z-index: 10;
+  transition: opacity 0.18s ease;
+}
+
+.veko-fade {
+  opacity: 0;
 }

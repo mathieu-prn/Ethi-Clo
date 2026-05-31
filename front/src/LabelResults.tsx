@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import type { ScoredLabelInfo } from "./scoreCalculator";
-import vekoImg from "./assets/veko.png";
+import vekoHappy from "./assets/veko-happy.png";
+import vekoNeutral from "./assets/veko-neutral.png";
+import vekoSad from "./assets/veko-sad.png";
 
 interface LabelResultsProps {
   data: ScoredLabelInfo;
@@ -9,7 +11,14 @@ interface LabelResultsProps {
   onDragStart: (e: React.TouchEvent | React.MouseEvent) => void;
   onDragMove: (e: React.TouchEvent | React.MouseEvent) => void;
   onDragEnd: (e: React.TouchEvent | React.MouseEvent) => void;
-  onUpperSectionRendered: (bottomPx: number) => void; // Nouvelle fonction pour envoyer la position
+  onUpperSectionRendered: (bottomPx: number) => void;
+}
+
+const getVekoImage = (score: number | null | undefined) => {
+  if (score == null) return vekoNeutral
+     if (score <= 33) return vekoSad
+     if (score <= 66) return vekoNeutral
+  return vekoHappy
 }
 
 const ScoreBar = ({ score, label }: { score: number; label: string }) => {
@@ -49,13 +58,12 @@ const LabelResults = ({ data, drawerHeight, isSnapping, onDragStart, onDragMove,
 
   const upperRef = useRef<HTMLDivElement>(null);
 
-  // Calcule la distance du bloc de score par rapport au haut de l'écran après le rendu
   useEffect(() => {
     const timer = setTimeout(() => {
       if (upperRef.current) {
         onUpperSectionRendered(upperRef.current.getBoundingClientRect().bottom);
       }
-    }, 50); // Léger délai pour s'assurer que le DOM est à jour
+    }, 50);
     return () => clearTimeout(timer);
   }, [data, onUpperSectionRendered]);
 
@@ -65,7 +73,7 @@ const LabelResults = ({ data, drawerHeight, isSnapping, onDragStart, onDragMove,
 
         <div className="image-placeholder">
           <img
-            src={vekoImg}
+            src={getVekoImage(data.global_score)}
             alt="Veko"
             className="veko-result-image"
           />
