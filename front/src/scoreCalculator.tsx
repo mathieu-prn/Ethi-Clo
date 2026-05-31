@@ -14,6 +14,8 @@ const materialScores: Record<string, number> = {
 
   "organic cotton": 85,
   "coton biologique": 85,
+  "recycled cotton": 80,
+  "coton recycle": 80,
   cotton: 60,
   coton: 60,
 
@@ -331,7 +333,7 @@ const normalizeText = (value?: string | null) =>
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9\s%]/g, "")
+    .replace(/[^a-z0-9\s%,]/g, "")
     .replace(/\s+/g, " ")
     .trim();
 
@@ -351,32 +353,64 @@ const materialEnvironmentalScore = (material?: string | null) => {
   const text = normalizeText(material);
   if (!text) return null;
 
-  const materialEntries = Object.entries(materialScores).filter(
-    ([keyword]) =>
-      !Object.keys(materialScores).some(
-        (otherKeyword) =>
-          otherKeyword !== keyword &&
-          otherKeyword.includes(keyword) &&
-          text.includes(otherKeyword),
-      ),
-  );
+  const components = text
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
 
-  const matches = materialEntries
-    .filter(([keyword]) => text.includes(keyword))
-    .map(([keyword, score]) => {
-      const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      const percentMatch = text.match(new RegExp(`(\\d{1,3})\\s*%\\s*${escapedKeyword}`));
+  const matches: { score: number; weight: number }[] = [];
 
-      return {
-        score,
-        weight: percentMatch ? Number(percentMatch[1]) : 100,
-      };
-    });
+  for (const component of components) {
+    const materialEntries = Object.entries(materialScores).filter(
+      ([keyword]) =>
+        !Object.keys(materialScores).some(
+          (otherKeyword) =>
+            otherKeyword !== keyword &&
+            otherKeyword.includes(keyword) &&
+            component.includes(otherKeyword),
+        ),
+    );
+
+    const componentMatches = materialEntries
+      .filter(([keyword]) => component.includes(keyword))
+      .map(([keyword, score]) => {
+        const escapedKeyword = keyword.replace(
+          /[.*+?^${}()|[\]\\]/g,
+          "\\$&"
+        );
+
+        const percentMatch = component.match(
+          new RegExp(`(\\d{1,3})\\s*%\\s*${escapedKeyword}`)
+        );
+
+        return {
+          score,
+          weight: percentMatch ? Number(percentMatch[1]) : 100,
+        };
+      });
+
+    matches.push(...componentMatches);
+  }
 
   if (matches.length === 0) return 50;
 
   const totalWeight = matches.reduce((total, item) => total + item.weight, 0);
-  const weightedScore = matches.reduce((total, item) => total + item.score * item.weight, 0);
+  const weightedScore = matches.reduce(
+    (total, item) => total + item.score * item.weight,
+    0
+  );
+
+  console.log(
+    "Material:",
+    normalizeText(material),
+    "Matches:",
+    matches,
+    "Weighted Score:",
+    weightedScore,
+    "Total Weight:",
+    totalWeight
+  );
+
   return clampScore(weightedScore / totalWeight);
 };
 
@@ -384,13 +418,13 @@ const careEnvironmentalAdjustment = (careInstructions?: string | null) => {
   const text = normalizeText(careInstructions);
   let adjustment = 0;
 
-  if (["cold", "30", "basse temperature", "basse température"].some((term) => text.includes(term))) {
+  if (["cold", "30", "basse temperature", "basse température","cold water","eau froide"].some((term) => text.includes(term))) {
     adjustment += 6;
   }
-  if (["hot", "60", "haute temperature", "haute température"].some((term) => text.includes(term))) {
+  if (["hot", "60", "haute temperature", "haute température","hot water","eau chaude"].some((term) => text.includes(term))) {
     adjustment -= 6;
   }
-  if ([" very hot", "90", "tres haute temperature", "très haute température"].some((term) => text.includes(term))) {
+  if ([" very hot", "90", "tres haute temperature", "très haute température", "very hot water", "eau très chaude"].some((term) => text.includes(term))) {
     adjustment -= 10;
   }
 
