@@ -3,8 +3,8 @@
   "name": "Ethi-Clo",
   "icons": [
     {
-      "src": "/vite.svg",
-      "sizes": "192x192",
+      "src": "/veko-neutral.png",
+      "sizes": "196x196",
       "type": "image/svg+xml"
     }
   ],
